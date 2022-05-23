@@ -105,7 +105,7 @@ class AttendenceController extends Controller
         // print_r('<pre>');
         // $temp = file_get_contents($file->getRealPath());
         // print_r(temp);die();
-        
+
         Excel::import(new AttendenceImport,$request->file);
         $attendence = Attendence::all();
         return view('attendence.index',compact('attendence'));

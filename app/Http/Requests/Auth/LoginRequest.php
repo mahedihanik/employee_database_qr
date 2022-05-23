@@ -53,6 +53,9 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        //        'official_email' => $this->request->get('email'),
+//            'employee_password'=> $this->request->get('password')
+
         RateLimiter::clear($this->throttleKey());
     }
 

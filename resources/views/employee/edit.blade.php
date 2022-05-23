@@ -13,7 +13,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <form action="{{ route('employee.update', $employee->id) }}" method="POST" enctype="multipart/form-data">
-                                    @csrf 
+                                    @csrf
                                     @method('PUT')
                                     <div class="form-row pb-8">
                                         <div class="col">
@@ -28,9 +28,9 @@
                                             <label for="dob">Date of Birth</label>
                                             <input type="date" class="form-control" name="dob" value="{{ $employee->dob }}">
                                         </div>
-                                        
+
                                     </div>
-                
+
                                     <div class="form-row pb-8">
                                         <div class="col">
                                             <label for="blood_group">Blood Group</label>
@@ -65,6 +65,16 @@
                                                 <option value="Aerogon Pte. Ltd" @if($employee->company_name == "Aerogon Pte. Ltd") selected @endif>Aerogon Pte. Ltd</option>
                                             </select>
                                         </div>
+
+                                        <div class="col">
+                                            <label for="company">Role</label>
+                                            <select class="form-control" id="company" name="employee_role">
+                                                <option value="">--select role--</option>
+                                                <option value="admin" @if($employee->employee_role == "admin") selected @endif>Admin</option>
+                                                <option value="user" @if($employee->employee_role == "user") selected @endif>User</option>
+                                            </select>
+                                        </div>
+
                                         <div class="col">
                                             <label for="name">Department</label>
                                             <input type="text" class="form-control" name="department" value="{{ $employee->department }}">
@@ -95,6 +105,12 @@
                                     </div>
 
                                     <div class="form-row pb-8">
+
+                                        <div class="col">
+                                            <label for="">Password</label>
+                                            <input type="password" class="form-control" name="employee_password" value="{{ $employee->employee_password }}">
+                                        </div>
+
                                         <div class="col">
                                             <label for="">Emergency Contact Name</label>
                                             <input type="text" class="form-control" name="ename" value="{{ $employee->ename }}">
@@ -117,7 +133,7 @@
                                         <div class="col">
                                             <label for="joining_date">Expiry Date</label>
                                             <input type="date" class="form-control" name="expiry_date" value="{{ $employee->expiry_date }}">
-                                        </div>    
+                                        </div>
                                     </div>
 
                                     <div class="form-row">
@@ -140,8 +156,8 @@
                                                 </label>
                                               </div>
                                         </div>
-                                        
-                                        
+
+
                                     </div>
                                     @if ($errors->any())
                                         <div class="alert alert-danger">
@@ -163,6 +179,6 @@
     </div>
 
     @section('scripts')
-        
+
     @endsection
 </x-app-layout>
