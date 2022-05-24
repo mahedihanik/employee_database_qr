@@ -19,14 +19,20 @@
                     <x-nav-link :href="route('employee.index')" :active="request()->routeIs('employee.index')">
                         {{ __('Employee') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
-                        {{ __('User') }}
+                    <x-nav-link :href="route('employee.show',{{\App\Http\Helpers\RoleCheck::roleCheckByLoggedInUser(auth()->id())}})" :active="request()->routeIs('employee.show',{{\App\Http\Helpers\RoleCheck::roleCheckByLoggedInUser(auth()->id())}})">
+                        {{ __('My Profile') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
+                        {{ __('My Attendance') }}
+                    </x-nav-link>
+{{--                    <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">--}}
+{{--                        {{ __('User') }}--}}
+{{--                    </x-nav-link>--}}
                     <x-nav-link :href="route('monthly_attendence.index')" :active="request()->routeIs('monthly_attendence.index')">
                         {{ __('Attendence') }}
                     </x-nav-link>
-                    
-                   
+
+
 
                 </div>
                 @endauth
@@ -63,7 +69,7 @@
                 </x-dropdown>
             </div>
 
-            
+
 
             <!-- Hamburger -->
             <div class="-mr-2 flex items-center sm:hidden">

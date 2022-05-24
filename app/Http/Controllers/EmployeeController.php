@@ -194,25 +194,57 @@ class EmployeeController extends Controller
 
         $request['active'] = isset($request['active']) ? 1 : 0;
 
-        if(isset($request['file'])) {
-            $fileName = $request->employee_id.'.'.$request->file->extension();
+//        if(isset($request['file'])) {
+//            $fileName = $request->employee_id.'.'.$request->file->extension();
+//
+//            // $request->file->move(storage_path('/images/employee'), $fileName);
+//
+//            // $request->image->storeAs('images/employee', $imageName);
+//
+//            $path = $request->file('file')->storeAs('public/employee/',$fileName);
+//
+//
+//
+//            // storage/app/images/file.png
+//
+//            $filePath = 'employee/' . $fileName;
+//
+//            $request['image'] = $filePath;
+//        }
 
-            // $request->file->move(storage_path('/images/employee'), $fileName);
-
-            // $request->image->storeAs('images/employee', $imageName);
-
-            $path = $request->file('file')->storeAs('public/employee/',$fileName);
 
 
+        Employee::find($id)->update([
+            'employee_id'=> $request->employee_id,
+            'name'=>$request->name,
+            'department'=>$request->department,
+            'designation'=>$request->designation,
+            'personal_email'=>$request->personal_email,
+            'official_email'=>$request->official_email,
+            'personal_number'=>$request->personal_number,
+            'official_number'=>$request->official_number,
+            'joining_date'=>$request->joining_date,
+            'home_address'=>$request->home_address,
+            'ename'=>$request->ename,
+            'ephone'=>$request->ephone,
+            'erelation'=>$request->erelation,
+            'gender'=>$request->gender,
+            'company_name'=>$request->company_name,
+            'employee_role'=>$request->employee_role,
+            'dob'=>$request->dob,
+            'blood_group'=>$request->blood_group,
+            'marital_status'=>$request->marital_status,
+            'image'=>$request->image,
+            'qrimage'=>$request->qrimage,
+            'expiry_date'=>$request->expiry_date,
+            'active'=>$request->active
+        ]);
 
-            // storage/app/images/file.png
+        if ($request->employee_password != null){
 
-            $filePath = 'employee/' . $fileName;
+            User::where('emp_id', $id)->update(['name'=>$request->name,'password' => Hash::make($request->employee_password),'email'=>$request->official_email]);
 
-            $request['image'] = $filePath;
         }
-
-        Employee::find($id)->update($request->all());
 
         return redirect()->route('employee.show', $id);
     }

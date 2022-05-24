@@ -1,28 +1,28 @@
 <x-app-layout>
     <x-slot name="header">
-    
+
         <div class="row">
             <div class="col-md-6">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    {{ __('Employee') }} 
+                    {{ __('Employee') }}
                 </h2>
             </div>
             <div class="col-md-6">
                 <a href="{{ route("employee.create") }}" style="float: right;"><i class="fas fa-plus"></i> Add New</a>
             </div>
         </div>
-        
-        
-    </x-slot>
- 
 
-    
-    
+
+    </x-slot>
+
+
+
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        
+
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            
+
                 <div class="p-6 bg-white border-b border-gray-200">
                 <div class="marig" style="padding-bottom: 17px;">
                   <h1 style="font-weight:700;">Employee Details</h1>
@@ -120,13 +120,17 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12 text-center mt-5">
-                                <button type="button" class="btn btn-warning"><a href="{{ route('employee.edit', $employee->id) }}">Edit</a></button>
+                                @if(\App\Http\Helpers\RoleCheck::permissionCheck($employee->id) == 'admin')
+                                    <button type="button" class="btn btn-warning"><a href="{{ route('employee.edit', $employee->id) }}">Edit</a></button>
+                                @else
+                                    <button type="button" class="btn btn-info"><a href="{{ route('user.edit', auth()->id()) }}">Change Password</a></button>
+                                @endif
                                 <form action="{{ route('employee.destroy', $employee->id) }}" method="POST" style="display:inline-block">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -134,72 +138,72 @@
  <section>
      <hr>
     <div class="py-12">
-         
+
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="marig" style="padding-bottom: 17px;">
             <h1 style="font-weight:700;">Attendence Details</h1>
-           </div> 
+           </div>
 
-           <div class="container pd_right" style="" > 
+           <div class="container pd_right" style="" >
            <a href='/exportpdf/{{$employee->id}}' class="btn btn-success" style="float:right;margin-left: 7px;">Export to PDF</a>
          </div>
-           
-         <div class="container" style="top: 50px;"  > 
+
+         <div class="container" style="top: 50px;"  >
            <a href='/exportexcel/{{$employee->id}}' class="btn btn-success" style="float:right;">Export to Excel</a>
          </div>
-          
-           
+
+
 <!-- <div class="col-md-6">
        <div class ="flex1" >
-        
+
         <form action="{{route('employee.show',[$employee->id])}}" method="get"  style="display:flex;">
             <select name="year" id="year" class="form-control " style="width: 130px; margin-right: 10px;" required>
                 <option value="">Select Year</option>
                 @for($i=2020;$i<=2030;$i++)
                     @if(request()->has('year'))
                 <option value="{{$i}}" @if(request()->year == $i) selected @endif>{{$i}}</option>
-                    @else 
+                    @else
                     <option value="{{$i}}">{{$i}}</option>
                     @endif
                 @endfor
             </select>
-            @php 
+            @php
                 $monthArray = ['Jan','Feb','Mar',"Apr",'May',"Jun",'Jul',"Aug","Sep","Oct","Nov","Dec"];
-            @endphp 
+            @endphp
           <select name="month" id="month" class="form-control " style="width: 138px; margin-right: 10px;" required>
-            
+
             <option value="">Select Month</option>
                 @foreach($monthArray as $i)
                     @if(request()->has('month'))
                     <option value="{{$i}}" @if(request()->month == $i) selected @endif>{{$i}}</option>
-                    @else 
+                    @else
                     <option value="{{$i}}">{{$i}}</option>
                     @endif
                 @endforeach
             </select>
             <button type="submit" class="btn btn-info btn-sm">Search</button>
         </form>
-      
+
        </div>
 
 </div> -->
     <!-- <form action="{{route('employee.show',[$employee->id])}}" method="get"  style="display:flex;">
          <label for="bday-month"></label>
          <input id="bday-month" type="month" name="bday-month">
-           
+
     </form> -->
     <form >
       <div>
           <label for="month"></label>
           @if(!is_null($month))
           <input id="month" type="month" name="month" required value="{{$month}}">
-          @else 
+          @else
           <input id="month" type="month" name="month" required value="">
           @endif
          <span class="validity"></span>
-           
 
-        
+
+
          <button type="submit" class="btn btn-info">
              <i class="fa fa-search"></i> Search
          </button>
@@ -209,15 +213,15 @@
       </div>
 
     </form>
-   
-        
+
+
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-           
+
                 <div class="p-6 bg-white border-b border-gray-200">
-                  
+
                     <table class="table table-striped" id="attendence-table" style="width:100%">
                         <thead>
-                            
+
                           <tr>
                             <th scope="col">Date</th>
                             <th scope="col">Clock In</th>
@@ -233,7 +237,7 @@
                           </tr>
                         </thead>
                         <tbody>
-                            @php 
+                            @php
                                 $i=1;
                             @endphp
                         @foreach ($monthly_attendence as $item)
@@ -247,8 +251,8 @@
                                        $timeArray = explode(":",$temp1);
                                        $totalMin = ($timeArray[0]*60 + $timeArray[1]);
                                        $workDuration = 480; //in miniute
-                                    
-                                        
+
+
                                        if($totalMin < $workDuration && $totalMin >=$max_late_min)
                                        {
                                         echo '<td style="background-color:#EDFC02">',$item->late,'</td>';
@@ -260,13 +264,13 @@
                                        }
                                     ?>
 
-                                      <?php 
+                                      <?php
                                        $temp2=$item->early;
                                        $timeArray = explode(":",$temp2);
                                        $totalMin = ($timeArray[0]*60 + $timeArray[1]);
                                        $workDuration = 480; //in miniute
-                                    
-                                        
+
+
                                        if($totalMin < $workDuration && $totalMin >=$max_early_min)
                                        {
                                         echo '<td style="background-color:#EDFC02">',$item->early,'</td>';
@@ -278,7 +282,7 @@
                                        }
                                     ?>
 
-                                   
+
                                     <?php
                                     $val1=$item->absent;
                                     if($val1==1)
@@ -287,13 +291,13 @@
                                     }
                                     elseif($val1==0)
                                     {
-                                      echo '<td>', "No",'</td>'; 
+                                      echo '<td>', "No",'</td>';
                                     }
                                     ?>
                                     <td>{{ $item->work_time }}</td>
                                     <td>{{ $item->ndays }}</td>
                                     <!-- <td> -->
-                                     <?php 
+                                     <?php
                                       $var1=$item->att_time;
                                       $timeArray = explode(":",$var1); //slice ATT time into array from string
                                       $totalMin = ($timeArray[0]*60 + $timeArray[1]); //convert into miniutes
@@ -308,28 +312,28 @@
                                       elseif($totalMin < $minWorkDuration)
                                       {
                                        echo '<td style="background-color:#F24D3F">',$item->att_time,'</td>';
-                                      
+
                                       }
                                       else{
                                         echo  '<td style="background-color:#7EDC86 " >',$item->att_time,'</td>';
                                       }
                                      ?>
-                                        
-                                         
-                                       
+
+
+
 
                                      <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                                           +
-                                         
+
                                        </button>
 
                                         <!-- Modal -->
-                                       
-                                          
+
+
                                             <!-- <a href="#" data-toggle="tooltip" title="{{$item->remarks}}">
                                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">Comment</button>
 
-                                               
+
                                                  <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                                                         <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
@@ -344,18 +348,18 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                
+
                                                             </div>
                                                             </div>
                                                         </div>
                                                         </div>
-                                                                                                    
+
                                               </a> -->
                                              <a href="#" data-toggle="tooltip" title="{{$item->remarks}}"  >
 
                                              <i class="fas fa-comment"></i>
                                              </a>
-                                             
+
 
                                                 <!-- Generated markup by the plugin -->
                                                 <div class="tooltip bs-tooltip-top" role="tooltip">
@@ -376,12 +380,12 @@
                                                 <div class="arrow"></div>
                                                 <div class="tooltip-inner">
 
-                                            
-                                                     
+
+
                                                 </div>
                                                 </div> -->
-                                           
-                                              
+
+
                                         <form action= "{{ url ('store') }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="id" value="{{$item->id}}">
@@ -397,23 +401,23 @@
                                                 <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                           
-                                            
+
+
                                             <div class="modal-body">
-                                           
-                                              
-                                                <input type="text" name="remarks" style="width:100%;height:100px" placeholder="Write Comments" value="{{$item->remarks}}" > 
-                                                
-                                              
+
+
+                                                <input type="text" name="remarks" style="width:100%;height:100px" placeholder="Write Comments" value="{{$item->remarks}}" >
+
+
                                             </div>
-                                            
+
 
 
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                 <button type="submit" class="btn btn-primary">Save</button>
                                             </div>
-                                            
+
                                             </div>
                                         </div>
                                         </div>
@@ -423,9 +427,9 @@
 
                                 </tr>
                         @endforeach
-                       
+
                      </tbody>
-                        
+
                     </table>
                 </div>
             </div>
@@ -433,11 +437,11 @@
     </div>
 
  </section>
-    
+
             </div>
-     
+
   </div>
 </div>
-    
+
 
 </x-app-layout>
