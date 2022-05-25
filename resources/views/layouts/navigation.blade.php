@@ -19,7 +19,7 @@
                     <x-nav-link :href="route('employee.index')" :active="request()->routeIs('employee.index')">
                         {{ __('Employee') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('employee.show',{{\App\Http\Helpers\RoleCheck::roleCheckByLoggedInUser(auth()->id())}})" :active="request()->routeIs('employee.show',{{\App\Http\Helpers\RoleCheck::roleCheckByLoggedInUser(auth()->id())}})">
+                    <x-nav-link :href="route('employee.myProfile',\App\Http\Helpers\RoleCheck::findEmployeeIdByLoggedInUserId(auth()->id()))" :active="request()->routeIs('employee.myProfile',\App\Http\Helpers\RoleCheck::findEmployeeIdByLoggedInUserId(auth()->id()))">
                         {{ __('My Profile') }}
                     </x-nav-link>
                     <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">

@@ -21,4 +21,11 @@ class RoleCheck
 
     }
 
+    public static function findEmployeeIdByLoggedInUserId($user_id)
+    {
+        $userInfo = User::select('emp_id')->where('id', $user_id)->first();
+        return $userInfo->emp_id;
+
+    }
+
 }

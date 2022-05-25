@@ -120,7 +120,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12 text-center mt-5">
-                                @if(\App\Http\Helpers\RoleCheck::permissionCheck($employee->id) == 'admin')
+                                @if(\App\Http\Helpers\RoleCheck::roleCheckByLoggedInUser(auth()->id()) == "admin")
                                     <button type="button" class="btn btn-warning"><a href="{{ route('employee.edit', $employee->id) }}">Edit</a></button>
                                 @else
                                     <button type="button" class="btn btn-info"><a href="{{ route('user.edit', auth()->id()) }}">Change Password</a></button>
@@ -135,9 +135,7 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
     </div>
 

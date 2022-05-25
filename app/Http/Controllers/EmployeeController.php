@@ -169,6 +169,50 @@ class EmployeeController extends Controller
 
     }
 
+
+
+    public function myProfile($id,Request $request)
+    {
+        // 2022-03
+        //  Mar-2022
+        $month = $request->has('month') ? $request->month : null;
+
+        $searchItem = date("M-Y",strtotime($request->month));
+
+        $employee = Employee::find($id);
+        $query=MonthlyAttendence::where('ac_no',$employee->employee_id);
+
+        if(!is_null($month)){
+            $query->where('date', 'LIKE', "%${searchItem}%");
+        }
+        $monthly_attendence = $query->get();
+
+        // echo "<pre>";
+        // print_r($monthly_attendence->toArray());
+        // exit;
+
+        $max_late_min = Setting::where('settings_key','max_late_min')->first()->value;
+        $max_early_min = Setting::where('settings_key','max_early_min')->first()->value;
+
+        // dd($max_late_min);
+
+        // echo "<pre>";
+        // print_r($monthly_attendence->toArray());
+        // exit;
+        return view('employee.myProfile', compact('employee','monthly_attendence','max_late_min','max_early_min','month'));
+
+
+
+        //$years = [];
+        //for($year=2020; $year = 2030; $year++)
+        //$years[$year] = $year;
+
+
+
+
+
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

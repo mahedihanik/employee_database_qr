@@ -33,7 +33,7 @@ Route::get('/', function () {
 
 
 Route::resource('/employee', EmployeeController::class, ['only' => [
-    'index', 'show', 'create', 'store', 'edit', 'update', 'destroy'
+    'index', 'show', 'create', 'store', 'edit', 'update', 'destroy','myProfile'
 ]])->middleware('auth');
 
 Route::resource('/user', UserController::class, ['only' => [
@@ -43,15 +43,15 @@ Route::resource('/user', UserController::class, ['only' => [
 Route::resource('/attendence', AttendenceController::class,['only' => [
     'index','create'
     ]])->middleware('auth');
-    
+
     Route::resource('/monthly_attendence', MonthlyAttendenceController::class,['only' => [
         'index','create'
-        ]])->middleware('auth');  
-    
+        ]])->middleware('auth');
 
 
 
-//route for remarks 
+
+//route for remarks
 Route::post('store',[EmployeeController::class,'storecomment']);
 
 //Export PDF
@@ -67,8 +67,8 @@ Route::get('/qrdownload/{id}', [QrController::class, 'download'])->name('qrdownl
 Route::get('/employee/verification/{id}', [EmployeeVerificationController::class, 'verifyData'])->name('employee.verify');
 
 
- 
-//Route Import file 
+
+//Route Import file
 //Route::post('/attendence/create',[AttendenceController::class,'import'])->name('attendence.import');
 
 //Route Import file for monthly attendence
