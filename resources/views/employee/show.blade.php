@@ -7,9 +7,11 @@
                     {{ __('Employee') }}
                 </h2>
             </div>
+            @if(\App\Http\Helpers\RoleCheck::roleCheckByLoggedInUser(auth()->id()) == "admin")
             <div class="col-md-6">
                 <a href="{{ route("employee.create") }}" style="float: right;"><i class="fas fa-plus"></i> Add New</a>
             </div>
+            @endif
         </div>
 
 
@@ -232,7 +234,9 @@
                             <th scope="col">Work_Time</th>
                             <th scope="col">NDays</th>
                             <th scope="col">ATT_Time</th>
+                            @if(\App\Http\Helpers\RoleCheck::roleCheckByLoggedInUser(auth()->id()) == "admin")
                             <th scope="col">Remarks</th>
+                            @endif
 
                           </tr>
                         </thead>
@@ -321,7 +325,7 @@
 
 
 
-
+                                    @if(\App\Http\Helpers\RoleCheck::roleCheckByLoggedInUser(auth()->id()) == "admin")
                                      <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                                           +
 
@@ -423,6 +427,7 @@
                                         </div>
                                      </form>
                                     </td>
+                                    @endif
 
 
                                 </tr>

@@ -17,19 +17,19 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     <x-nav-link :href="route('employee.index')" :active="request()->routeIs('employee.index')">
-                        {{ __('Employee') }}
+                        {{ __('Employees') }}
                     </x-nav-link>
                     <x-nav-link :href="route('employee.myProfile',\App\Http\Helpers\RoleCheck::findEmployeeIdByLoggedInUserId(auth()->id()))" :active="request()->routeIs('employee.myProfile',\App\Http\Helpers\RoleCheck::findEmployeeIdByLoggedInUserId(auth()->id()))">
-                        {{ __('My Profile') }}
+                        {{ __('Profile') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
-                        {{ __('My Attendance') }}
+                    <x-nav-link :href="route('employee.myAttendance',\App\Http\Helpers\RoleCheck::findEmployeeIdByLoggedInUserId(auth()->id()))" :active="request()->routeIs('employee.myAttendance',\App\Http\Helpers\RoleCheck::findEmployeeIdByLoggedInUserId(auth()->id()))">
+                        {{ __('Attendance') }}
                     </x-nav-link>
 {{--                    <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">--}}
 {{--                        {{ __('User') }}--}}
 {{--                    </x-nav-link>--}}
                     <x-nav-link :href="route('monthly_attendence.index')" :active="request()->routeIs('monthly_attendence.index')">
-                        {{ __('Attendence') }}
+                        {{ __('Attendance Management') }}
                     </x-nav-link>
 
 
@@ -65,6 +65,12 @@
                                 {{ __('Log out') }}
                             </x-dropdown-link>
                         </form>
+                        <x-dropdown-link :href="route('logout')">
+                            {{ __('Change Password') }}
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="route('logout')">
+                            {{ __('Setting') }}
+                        </x-dropdown-link>
                     </x-slot>
                 </x-dropdown>
             </div>

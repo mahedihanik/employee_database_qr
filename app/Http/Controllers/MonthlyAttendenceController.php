@@ -91,13 +91,21 @@ class MonthlyAttendenceController extends Controller
     }
     public function import(Request $request)
     {
-        
+
         Excel::import(new MonthlyAttendenceImport,$request->file);
         $monthly_attendence = MonthlyAttendence::all();
 
         // return view('attendence.index', compact('monthly_attendence'));
         return redirect()->route("monthly_attendence.index");
-        
 
+
+    }
+
+    public function attendanceAdjustment($data)
+    {
+        //
+        //$monthly_attendence = MonthlyAttendence::all();
+
+        return view('attendence.adjustment', compact('data'));
     }
 }

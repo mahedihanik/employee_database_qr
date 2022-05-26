@@ -6,9 +6,11 @@
                     {{ __('Employee') }}
                 </h2>
             </div>
+            @if(\App\Http\Helpers\RoleCheck::roleCheckByLoggedInUser(auth()->id()) == "admin")
             <div class="col-md-6">
                 <a href="{{ route("employee.create") }}" style="float: right;"><i class="fas fa-plus"></i> Add New</a>
             </div>
+            @endif
         </div>
 
 

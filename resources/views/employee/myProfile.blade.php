@@ -7,22 +7,12 @@
                     {{ __('Employee') }}
                 </h2>
             </div>
-            <div class="col-md-6">
-                <a href="{{ route("employee.create") }}" style="float: right;"><i class="fas fa-plus"></i> Add New</a>
-            </div>
         </div>
-
-
     </x-slot>
-
-
-
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div class="marig" style="padding-bottom: 17px;">
                         <h1 style="font-weight:700;">Employee Details</h1>
@@ -118,26 +108,9 @@
                                 <button type="button" class="btn btn-success mt-2"><a href="{{ route('qrdownload', $employee->id) }}">Download</a></button>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12 text-center mt-5">
-                                @if(\App\Http\Helpers\RoleCheck::roleCheckByLoggedInUser(auth()->id()) == "admin")
-                                    <button type="button" class="btn btn-warning"><a href="{{ route('employee.edit', $employee->id) }}">Edit</a></button>
-                                @else
-                                    <button type="button" class="btn btn-info"><a href="{{ route('user.edit', auth()->id()) }}">Change Password</a></button>
-                                @endif
-                                <form action="{{ route('employee.destroy', $employee->id) }}" method="POST" style="display:inline-block">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
-
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
 </x-app-layout>

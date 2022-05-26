@@ -44,11 +44,13 @@ Route::resource('/attendence', AttendenceController::class,['only' => [
     'index','create'
     ]])->middleware('auth');
 
-    Route::resource('/monthly_attendence', MonthlyAttendenceController::class,['only' => [
-        'index','create'
-        ]])->middleware('auth');
+Route::resource('/monthly_attendence', MonthlyAttendenceController::class,['only' => [
+    'index','create'
+    ]])->middleware('auth');
 
-
+Route::get('showmyprofile/{id}',[EmployeeController::class,'myProfile'])->name('employee.myProfile')->middleware('auth');
+Route::get('showmyattendance/{id}',[EmployeeController::class,'myAttendance'])->name('employee.myAttendance')->middleware('auth');
+Route::post('attendance_adjustment/{data}',[MonthlyAttendenceController::class,'attendanceAdjustment'])->middleware('auth');
 
 
 //route for remarks
