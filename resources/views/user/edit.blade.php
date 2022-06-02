@@ -12,7 +12,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12">
-                                <form action="{{ route('user.update', $user->id) }}" method="POST">
+                                <form action="{{ route('user.update', $user->id) }}" method="POST" onSubmit = "return checkPassword(this)">
                                     @csrf
                                     @method('PUT')
                                     <div class="form-row pb-8">
@@ -31,6 +31,12 @@
                                         <div class="col">
                                             <label for="password">Type Your Password</label>
                                             <input type="password" class="form-control" name="password">
+                                            <span style="color: #F24D3F !important;" id="passwordError"></span>
+                                        </div>
+                                        <div class="col">
+                                            <label for="password">Confirm Your Password</label>
+                                            <input type="password" class="form-control" name="confirmPassword">
+                                            <span style="color: #F24D3F !important;" id="confirmPasswordError"></span>
                                         </div>
 
                                     </div>
@@ -54,6 +60,29 @@
     </div>
 
     @section('scripts')
+        <script>
 
+            function checkPassword(form) {
+                let password = form.password.value;
+                let confirmPassword = form.confirmPassword.value;
+                if (password === ''){
+                    $("#confirmPasswordError").html("");
+                    $("#passwordError").html("Please enter the Password !");
+                    return false;
+                }
+                else if (confirmPassword === ''){
+                    $("#passwordError").html("");
+                    $("#confirmPasswordError").html("Please enter the Confirm Password !");
+                    return false;
+                }
+                else if (password !== confirmPassword) {
+                    $("#confirmPasswordError").html("Password did not match, please try again !");
+                    return false;
+                }
+                else{
+                    return true;
+                }
+            }
+        </script>
     @endsection
 </x-app-layout>

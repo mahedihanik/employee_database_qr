@@ -65,7 +65,7 @@
                                 {{ __('Log out') }}
                             </x-dropdown-link>
                         </form>
-                        <x-dropdown-link :href="route('logout')">
+                        <x-dropdown-link :href="route('user.edit', auth()->id())">
                             {{ __('Change Password') }}
                         </x-dropdown-link>
                         <x-dropdown-link :href="route('logout')">

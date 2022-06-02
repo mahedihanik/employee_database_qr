@@ -103,8 +103,8 @@ class UserController extends Controller
 
 
         $user = User::find($id)->update($data);
-
-        return redirect()->route('user.index');
+        return redirect()->route('dashboard');
+//        return redirect()->route('user.index');
     }
 
     /**
