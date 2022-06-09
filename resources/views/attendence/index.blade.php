@@ -103,8 +103,16 @@
                 $("#attendence-table").DataTable();
                 $("#attendence-table").on( 'click', 'tr', function () {
                     let data = $("#attendence-table").DataTable().row(this).data();
-                    //console.log('Here is your data: ', data);
-                    window.location.href = "/attendance_adjustment/"+9;
+                    var newDataSet = {};
+                    newDataSet['acc_no']=data[0];
+                    newDataSet['name']=data[1];
+                    newDataSet['date']=data[2];
+                    newDataSet['clock_in']=data[3];
+                    newDataSet['clock_out']=data[4];
+
+                    console.log(JSON.stringify(newDataSet));
+                    window.open("/attendance_adjustment/"+JSON.stringify(newDataSet),'_blank');
+                    //window.location.href = "/attendance_adjustment/"+JSON.stringify(newDataSet);
                 } );
             });
         </script>

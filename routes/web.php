@@ -50,7 +50,8 @@ Route::resource('/monthly_attendence', MonthlyAttendenceController::class,['only
 
 Route::get('showmyprofile/{id}',[EmployeeController::class,'myProfile'])->name('employee.myProfile')->middleware('auth');
 Route::get('showmyattendance/{id}',[EmployeeController::class,'myAttendance'])->name('employee.myAttendance')->middleware('auth');
-Route::post('attendance_adjustment/{data}',[MonthlyAttendenceController::class,'attendanceAdjustment'])->middleware('auth');
+Route::get('attendance_adjustment/{data}',[MonthlyAttendenceController::class,'attendanceAdjustment'])->middleware('auth');
+Route::post('/wfh_attendance_adjustment',[MonthlyAttendenceController::class,'wfhAttendanceAdjustment'])->middleware('auth');
 
 
 //route for remarks
