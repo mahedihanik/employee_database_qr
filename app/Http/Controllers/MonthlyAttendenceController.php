@@ -108,4 +108,10 @@ class MonthlyAttendenceController extends Controller
 
         return view('attendence.adjustment', compact('data'));
     }
+
+    public function wfhAttendanceAdjustment(Request $request)
+    {
+        echo $request->wfh_acc_no.' '.$request->Wfh_adj_date_new;
+
+    }
 }
