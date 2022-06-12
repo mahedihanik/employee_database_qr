@@ -14,25 +14,36 @@
 
     </x-slot>
 
+<!--    --><?php
+//        echo '<pre>';
+//        print_r($monthly_attendence);die();
+//
+//
+//    ?>
+
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <table class="table table-striped" id="attendence-table" style="width:100%">
+                    <table class="table table-striped" id="attendence-table" >
                         <thead>
                           <tr>
 
-                            <th scope="col">Ac-no</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Clock In</th>
-                            <th scope="col">Clock Out</th>
+                            <th scope="col">Ac_no</th>
+                            <th scope="col">Employee_Name</th>
+                            <th scope="col">Entry_Date</th>
+                            <th scope="col">Clock_In</th>
+                            <th scope="col">Clock_Out</th>
                             <th scope="col">Late</th>
                             <th scope="col">Early</th>
                             <th scope="col">Absent</th>
                             <th scope="col">Work_Time</th>
                             <th scope="col">NDays</th>
                             <th scope="col">ATT_Time</th>
+                            <th scope="col">WFH</th>
+                            <th scope="col">WA</th>
+                            <th scope="col">LA</th>
 
                           </tr>
                         </thead>
@@ -42,8 +53,8 @@
                                 <tr style="cursor: pointer">
 
                                     <td>{{ $item->ac_no }}</td>
-                                    <td width="30%">{{ $item->name }}</td>
-                                    <td width="20%">{{ $item->date }}</td>
+                                    <td>{{ $item->name }}</td>
+                                    <td>{{ $item->date }}</td>
                                     <td>{{ $item->clock_in }}</td>
                                     <td>{{ $item->clock_out}}</td>
                                     <td>{{ $item->late}}</td>
@@ -81,6 +92,42 @@
                                         echo  '<td>',$item->att_time,'</td>';
                                       }
                                      ?>
+
+                                     <?php
+                                     $wfh=$item->wfh;
+                                     if($wfh==1)
+                                     {
+                                         echo '<td>', "Yes",'</td>';
+                                     }
+                                     elseif($wfh==0)
+                                     {
+                                         echo '<td>', "No",'</td>';
+                                     }
+                                     ?>
+
+                                     <?php
+                                     $weekend_adjustment=$item->weekend_adjustment;
+                                     if($weekend_adjustment==1)
+                                     {
+                                         echo '<td>', "Yes",'</td>';
+                                     }
+                                     elseif($weekend_adjustment==0)
+                                     {
+                                         echo '<td>', "No",'</td>';
+                                     }
+                                     ?>
+                                     <?php
+                                     $leave_adjustment=$item->leave_adjustment;
+                                     if($leave_adjustment==1)
+                                     {
+                                         echo '<td>', "Yes",'</td>';
+                                     }
+                                     elseif($leave_adjustment==0)
+                                     {
+                                         echo '<td>', "No",'</td>';
+                                     }
+                                     ?>
+
                                     <!-- </td> -->
 
 
@@ -100,7 +147,9 @@
     @section('scripts')
         <script>
             $(document).ready( function () {
-                $("#attendence-table").DataTable();
+                $("#attendence-table").DataTable({
+                    scrollX:true,
+                });
                 $("#attendence-table").on( 'click', 'tr', function () {
                     let data = $("#attendence-table").DataTable().row(this).data();
                     var newDataSet = {};
@@ -109,8 +158,11 @@
                     newDataSet['date']=data[2];
                     newDataSet['clock_in']=data[3];
                     newDataSet['clock_out']=data[4];
-
-                    console.log(JSON.stringify(newDataSet));
+                    newDataSet['absent']=data[5];
+                    newDataSet['wfh']=data[6];
+                    newDataSet['weekend_adj']=data[7];
+                    newDataSet['leave_adj']=data[8];
+                    //console.log(JSON.stringify(newDataSet));
                     window.open("/attendance_adjustment/"+JSON.stringify(newDataSet),'_blank');
                     //window.location.href = "/attendance_adjustment/"+JSON.stringify(newDataSet);
                 } );
