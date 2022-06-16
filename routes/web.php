@@ -31,6 +31,10 @@ Route::get('/', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+//Route::get('/attendance_adjustment_tab', function () {
+//    return view('attendence.attendanceAdjustmentTab');
+//})->middleware(['auth'])->name('attendanceAdjustmentTab');
+
 
 Route::resource('/employee', EmployeeController::class, ['only' => [
     'index', 'show', 'create', 'store', 'edit', 'update', 'destroy','myProfile'
@@ -51,8 +55,10 @@ Route::resource('/monthly_attendence', MonthlyAttendenceController::class,['only
 Route::get('showmyprofile/{id}',[EmployeeController::class,'myProfile'])->name('employee.myProfile')->middleware('auth');
 Route::get('showmyattendance/{id}',[EmployeeController::class,'myAttendance'])->name('employee.myAttendance')->middleware('auth');
 Route::get('attendance_adjustment/{data}',[MonthlyAttendenceController::class,'attendanceAdjustment'])->middleware('auth');
-Route::post('/wfh_attendance_adjustment',[MonthlyAttendenceController::class,'wfhAttendanceAdjustment'])->middleware('auth');
-
+Route::post('/weekend_attendance_adjustment',[MonthlyAttendenceController::class,'weekendAttendanceAdjustment'])->middleware('auth');
+Route::put('/attendance_adjustment_update',[MonthlyAttendenceController::class,'attendanceAdjustmentUpdate'])->middleware('auth');
+Route::get('/attendance_adjustment_tab',[MonthlyAttendenceController::class,'attendanceAdjustmentTabInitial'])->middleware('auth')->name('attendanceAdjustmentTab');
+Route::post('/get_attendance_adjustment_tab',[MonthlyAttendenceController::class,'getAttendanceAdjustmentTabDataField'])->middleware('auth');
 
 //route for remarks
 Route::post('store',[EmployeeController::class,'storecomment']);

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
+use DateTime;
 use Illuminate\Http\Request;
 use App\Models\MonthlyAttendence;
 use App\Models\Attendence;
@@ -109,9 +111,55 @@ class MonthlyAttendenceController extends Controller
         return view('attendence.adjustment', compact('data'));
     }
 
-    public function wfhAttendanceAdjustment(Request $request)
+    public function weekendAttendanceAdjustment(Request $request)
     {
-        echo $request->wfh_acc_no.' '.$request->Wfh_adj_date_new;
+        $dateSlice = explode('-',$request->entry_date);
+        $monthNum  = $dateSlice[1];
+        $dateObj   = DateTime::createFromFormat('!m', $monthNum);
+        $monthName = $dateObj->format('M');
+        $finalDateFormat = $dateSlice[2].'-'.$monthName.'-'.$dateSlice[0];
+        $flag = MonthlyAttendence::where(['ac_no'=>$request->weekend_acc_no,'date'=>$finalDateFormat])->first()->update(['weekend_adjustment_date'=>$request->weekend_adj_date_new,'weekend_adjustment'=> 1]);
+        if ($flag == 1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public function attendanceAdjustmentUpdate(Request $request)
+    {
+        $dateSlice = explode('-',$request->date);
+        $monthNum  = $dateSlice[1];
+        $dateObj   = DateTime::createFromFormat('!m', $monthNum);
+        $monthName = $dateObj->format('M');
+        $finalDateFormat = $dateSlice[2].'-'.$monthName.'-'.$dateSlice[0];
+        $flag = MonthlyAttendence::where(['ac_no'=>$request->account_no,'date'=>$finalDateFormat])->first()->update(['clock_in'=>$request->clock_in,'clock_out'=>$request->clock_out,'absent'=>$request->absent,'wfh'=> ($request->wfh == "Yes" )? 1 : 0,'leave_adjustment'=> ($request->leaveAdj == "Yes" )? 1 : 0]);
+        return redirect()->route("monthly_attendence.index");
 
     }
+    public function attendanceAdjustmentTabInitial()
+    {
+        $todayDate = date('Y-m-d');
+        $empNameList = Employee::select('name')->where(['active'=> 1, 'primary_account' => 1])->get()->toArray();
+        $empNameFinalList = [];
+        foreach ($empNameList as $empName){
+            array_push($empNameFinalList,$empName['name']);
+        }
+        return view('attendence.attendanceAdjustmentTab', compact('empNameFinalList','todayDate'));
+
+    }
+
+    public function getAttendanceAdjustmentTabDataField(Request $request)
+    {
+
+        $dateSlice = explode('-',$request->entryDateTabFormParam);
+        $monthNum  = $dateSlice[1];
+        $dateObj   = DateTime::createFromFormat('!m', $monthNum);
+        $monthName = $dateObj->format('M');
+        $finalDateFormat = $dateSlice[2].'-'.$monthName.'-'.$dateSlice[0];
+        $dataListEmpTab = MonthlyAttendence::where('name', 'like', '%' . $request->employeeNameTabFormParam . '%')->where('date',$finalDateFormat)->first()->toArray();
+        return $dataListEmpTab;
+
+
+    }
+
 }

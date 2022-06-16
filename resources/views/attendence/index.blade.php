@@ -109,7 +109,8 @@
                                      $weekend_adjustment=$item->weekend_adjustment;
                                      if($weekend_adjustment==1)
                                      {
-                                         echo '<td>', "Yes",'</td>';
+                                       echo '<td><span data-toggle="tooltip" data-placement="top" title="'.$item->weekend_adjustment_date.'" class="badge badge-info">Yes</span></td>';
+                                         //echo '<td>', "Yes",'</td>';
                                      }
                                      elseif($weekend_adjustment==0)
                                      {
@@ -152,21 +153,38 @@
                 });
                 $("#attendence-table").on( 'click', 'tr', function () {
                     let data = $("#attendence-table").DataTable().row(this).data();
+                    console.log(JSON.stringify(data));
                     var newDataSet = {};
                     newDataSet['acc_no']=data[0];
                     newDataSet['name']=data[1];
                     newDataSet['date']=data[2];
                     newDataSet['clock_in']=data[3];
                     newDataSet['clock_out']=data[4];
-                    newDataSet['absent']=data[5];
-                    newDataSet['wfh']=data[6];
-                    newDataSet['weekend_adj']=data[7];
-                    newDataSet['leave_adj']=data[8];
-                    //console.log(JSON.stringify(newDataSet));
+                    newDataSet['late']=data[5];
+                    newDataSet['early']=data[6];
+                    newDataSet['absent']=data[7];
+                    newDataSet['work_time']=data[8];
+                    newDataSet['NDays']=data[9];
+                    newDataSet['att_time']=data[10];
+                    newDataSet['wfh']=data[11];
+                    newDataSet['weekend_adj']=stripHtml(data[12]);
+                    newDataSet['leave_adj']=data[13];
+                    //console.log(stripHtml(data[12]));
                     window.open("/attendance_adjustment/"+JSON.stringify(newDataSet),'_blank');
                     //window.location.href = "/attendance_adjustment/"+JSON.stringify(newDataSet);
                 } );
             });
+
+            function stripHtml(html)
+            {
+                let tmp = document.createElement("DIV");
+                tmp.innerHTML = html;
+                return tmp.textContent || tmp.innerText || "";
+            }
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
         </script>
+        <script src="{{asset('js/popper.min.js?v=7.0.5')}}"></script>
     @endsection
 </x-app-layout>

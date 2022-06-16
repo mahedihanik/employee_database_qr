@@ -32,6 +32,10 @@
                         {{ __('Attendance Management') }}
                     </x-nav-link>
 
+                    <x-nav-link :href="route('attendanceAdjustmentTab')" :active="request()->routeIs('attendanceAdjustmentTab')">
+                        {{ __('Attendance Adjustment') }}
+                    </x-nav-link>
+
 
 
                 </div>

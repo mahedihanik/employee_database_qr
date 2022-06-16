@@ -10,7 +10,7 @@ class MonthlyAttendence extends Model
     use HasFactory;
     protected $table="monthly_attendences";
 
-    protected $fillable=['emp_no','ac_no','no','name','auto_assign','date','timetable','on_duty','off_duty','clock_in','clock_out','normal','real_time','late','early','absent','ot_time','work_time','exception','must_cin','must_cout','department','ndays','weekend','holiday','att_time','ndays_ot','weekend_ot','holidays_ot','remarks'];
+    protected $fillable=['emp_no','ac_no','no','name','auto_assign','date','wfh','weekend_adjustment','weekend_adjustment_date','leave_adjustment','timetable','on_duty','off_duty','clock_in','clock_out','normal','real_time','late','early','absent','ot_time','work_time','exception','must_cin','must_cout','department','ndays','weekend','holiday','att_time','ndays_ot','weekend_ot','holidays_ot','remarks'];
     public $timestamps = false;
 
     public static function getMonthlyattendence()
