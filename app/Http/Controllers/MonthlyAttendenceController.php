@@ -127,12 +127,14 @@ class MonthlyAttendenceController extends Controller
     }
     public function attendanceAdjustmentUpdate(Request $request)
     {
+//        echo '<pre>';
+//        print_r($request->date);die();
         $dateSlice = explode('-',$request->date);
         $monthNum  = $dateSlice[1];
         $dateObj   = DateTime::createFromFormat('!m', $monthNum);
         $monthName = $dateObj->format('M');
         $finalDateFormat = $dateSlice[2].'-'.$monthName.'-'.$dateSlice[0];
-        $flag = MonthlyAttendence::where(['ac_no'=>$request->account_no,'date'=>$finalDateFormat])->first()->update(['clock_in'=>$request->clock_in,'clock_out'=>$request->clock_out,'absent'=>$request->absent,'wfh'=> ($request->wfh == "Yes" )? 1 : 0,'leave_adjustment'=> ($request->leaveAdj == "Yes" )? 1 : 0]);
+        $flag = MonthlyAttendence::where(['ac_no'=>$request->account_no,'date'=>$finalDateFormat])->first()->update(['clock_in'=>$request->clock_in,'clock_out'=>$request->clock_out,'absent'=>($request->absent == "Yes")? 0 : 1,'weekend_adjustment'=> ($request->weekAdj == "Yes" )? 1 : 0,'wfh'=> ($request->wfh == "Yes" )? 1 : 0,'leave_adjustment'=> ($request->leaveAdj == "Yes" )? 1 : 0]);
         return redirect()->route("monthly_attendence.index");
 
     }

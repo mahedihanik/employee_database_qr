@@ -108,14 +108,15 @@
                                     <div class="form-row pb-8">
                                         <div class="col">
                                             <label for="early">Weekend Adjustment : </label>
-                                            <input class="form-control ml-5" type="radio" value="Yes" name="weekAdj" id="weekAdj_yes">
+                                            <input class="form-control ml-5" type="radio" value="Yes" name="weekAdj" id="weekAdj_yes_tab">
                                             <label class="form-check-label" for="weekAdj_yes">
                                                 Yes
                                             </label>
-                                            <input class="form-control ml-3" type="radio" value="No" name="weekAdj" id="weekAdj_no">
+                                            <input class="form-control ml-3" type="radio" value="No" name="weekAdj" id="weekAdj_no_tab">
                                             <label class="form-check-label" for="weekAdj_no">
                                                 No
                                             </label>
+                                            <span id="weekAdj_date_show_side" class="badge badge-info d-none"></span>
                                         </div>
                                     </div>
                                     <div class="form-row pb-8">
@@ -189,7 +190,8 @@
                             $("#NDays_tab").val(response.ndays);
                             $("#att_time_tab").val(response.att_time);
                             (response.wfh === 0 ? $("#wfh_no_tab").attr('checked',true):$("#wfh_yes_tab").attr('checked',true));
-                            (response.wfh === 0 ? $("#leaveAdj_no_tab").attr('checked',true):$("#leaveAdj_yes_tab").attr('checked',true));
+                            (response.weekend_adjustment === 0 ? $("#weekAdj_no_tab").attr('checked',true):$("#weekAdj_yes_tab").attr('checked',true)+$("#weekAdj_date_show_side").removeClass('d-none').html("Weekend Adjustment Date : "+response.weekend_adjustment_date));
+                            (response.leave_adjustment === 0 ? $("#leaveAdj_no_tab").attr('checked',true):$("#leaveAdj_yes_tab").attr('checked',true));
                             $("#update_button_tab").removeClass('d-none');
                             console.log(response);
 
@@ -202,56 +204,57 @@
                             )
                         }
                     })
+                    $('#weekAdj_yes_tab').click(function(e) {
+                        Swal.fire({
+                            title: "Please enter the date",
+                            html:'<input type="date" id="weekend_date_adjust" class="form-control" autofocus>',
+                            showCancelButton: true,
+                            confirmButtonColor: "#17A2B8",
+                            confirmButtonText: "Adjust",
+                            cancelButtonText: "Cancel",
+                            cancelButtonColor: "#DC3545",
+                            buttonsStyling: true,
+                        }).then(function (e){
+                            if(e.value === true){
+
+                                let weekend_date_adjust_new = $("#weekend_date_adjust").val();
+                                let weekend_date_adjust_employee_acc_no = $("#account_no_id").val();
+                                let en_date = $("#entryDateTab").val();
+                                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+                                $.ajax({
+                                    url:"/weekend_attendance_adjustment/",
+                                    type:"POST",
+                                    data:{
+                                        weekend_acc_no:weekend_date_adjust_employee_acc_no,
+                                        weekend_adj_date_new:weekend_date_adjust_new,
+                                        entry_date:en_date,
+                                        _token: CSRF_TOKEN
+                                    },
+                                    cache: false,
+                                    success: function(response) {
+                                        swal.fire(
+                                            "Success!",
+                                            "Your Adjustment has been saved!",
+                                            "success"
+                                        )
+                                    },
+                                    failure: function (response) {
+                                        swal.fire(
+                                            "Internal Error",
+                                            "Oops, your Adjustment was not saved.", // had a missing comma
+                                            "error"
+                                        )
+                                    }
+                                })
+                            }
+                        })
+                    });
                 }
 
             });
 
-            $('#weekAdj_yes').click(function(e) {
-                Swal.fire({
-                    title: "Please enter the date",
-                    html:'<input type="date" id="weekend_date_adjust" class="form-control" autofocus>',
-                    showCancelButton: true,
-                    confirmButtonColor: "#17A2B8",
-                    confirmButtonText: "Adjust",
-                    cancelButtonText: "Cancel",
-                    cancelButtonColor: "#DC3545",
-                    buttonsStyling: true,
-                }).then(function (e){
-                    if(e.value === true){
 
-                        let weekend_date_adjust_new = $("#weekend_date_adjust").val();
-                        let weekend_date_adjust_employee_acc_no = $("#account_no_id").val();
-                        let en_date = $("#entryDate").val();
-                        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-
-                        $.ajax({
-                            url:"/weekend_attendance_adjustment/",
-                            type:"POST",
-                            data:{
-                                weekend_acc_no:weekend_date_adjust_employee_acc_no,
-                                weekend_adj_date_new:weekend_date_adjust_new,
-                                entry_date:en_date,
-                                _token: CSRF_TOKEN
-                            },
-                            cache: false,
-                            success: function(response) {
-                                swal.fire(
-                                    "Success!",
-                                    "Your Adjustment has been saved!",
-                                    "success"
-                                )
-                            },
-                            failure: function (response) {
-                                swal.fire(
-                                    "Internal Error",
-                                    "Oops, your Adjustment was not saved.", // had a missing comma
-                                    "error"
-                                )
-                            }
-                        })
-                    }
-                })
-            });
 
         </script>
     @endsection

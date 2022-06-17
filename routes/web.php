@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReportController;
 use App\Http\Helpers\GenerateQrCode;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QrController;
@@ -59,7 +60,7 @@ Route::post('/weekend_attendance_adjustment',[MonthlyAttendenceController::class
 Route::put('/attendance_adjustment_update',[MonthlyAttendenceController::class,'attendanceAdjustmentUpdate'])->middleware('auth');
 Route::get('/attendance_adjustment_tab',[MonthlyAttendenceController::class,'attendanceAdjustmentTabInitial'])->middleware('auth')->name('attendanceAdjustmentTab');
 Route::post('/get_attendance_adjustment_tab',[MonthlyAttendenceController::class,'getAttendanceAdjustmentTabDataField'])->middleware('auth');
-
+Route::get('/report',[ReportController::class,'index'])->middleware('auth')->name('report.index');
 //route for remarks
 Route::post('store',[EmployeeController::class,'storecomment']);
 

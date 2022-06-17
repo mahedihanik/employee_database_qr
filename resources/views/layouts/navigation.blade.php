@@ -35,6 +35,9 @@
                     <x-nav-link :href="route('attendanceAdjustmentTab')" :active="request()->routeIs('attendanceAdjustmentTab')">
                         {{ __('Attendance Adjustment') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('report.index')" :active="request()->routeIs('report.index')">
+                        {{ __('Report') }}
+                    </x-nav-link>
 
 
 

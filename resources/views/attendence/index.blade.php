@@ -63,11 +63,11 @@
                                     $val1=$item->absent;
                                     if($val1==1)
                                     {
-                                    echo '<td style="background-color:#43EB8D">', "Yes",'</td>';
+                                    echo '<td style="background-color:#43EB8D">', "No",'</td>';
                                     }
                                     elseif($val1==0)
                                     {
-                                      echo '<td>', "No",'</td>';
+                                      echo '<td>', "Yes",'</td>';
                                     }
                                     ?>
                                     <td>{{ $item->work_time }}</td>
