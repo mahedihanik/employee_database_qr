@@ -12,33 +12,18 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div class="container">
                         <div class="row">
-                            <div class="col-md-12">
-                                <form action="{{ url('attendance_adjustment_update') }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
+                            <div class="col-md-5">
                                     <div class="form-row pb-8">
                                         <div class="col">
-                                            <label for="account_no">Account No</label>
-                                            <input type="number" id="account_no_id" class="form-control" name="account_no" value="" readonly>
-                                        </div>
-                                        <div class="col">
-                                            <label for="date">Date</label>
-                                            <input id="entryDateTab" type="date" class="form-control" name="date" value="">
+                                            <label for="date">Please Select Date Range :</label>
+                                            <div id="reportRange" style="background: #fff; cursor: pointer; padding: 6px 10px; border: 1px solid #ccc; border-radius: 5px; width: 80%">
+                                                <i class="fa fa-calendar ml-1"></i>&nbsp;
+                                                <span></span> <i class="fa fa-caret-down ml-20"></i>
+                                            </div>
                                         </div>
 
                                     </div>
-
-                                    @if ($errors->any())
-                                        <div class="alert alert-danger">
-                                            <ul>
-                                                @foreach ($errors->all() as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    @endif
-                                    <button id="update_button_tab" type="submit" class="btn btn-success d-none">Update</button>
-                                </form>
+{{--                                    <button type="submit" class="btn btn-success">Generate Report</button>--}}
                             </div>
                         </div>
                     </div>
@@ -48,5 +33,61 @@
     </div>
 
     @section('scripts')
+
+        <script type="text/javascript">
+
+            $(function() {
+
+                let start = moment().subtract(29, 'days');
+                let end = moment();
+
+                function dateRanger(start, end) {
+
+                    $('#reportRange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                    let startDateParam = start.format('D-MMM-YYYY');
+                    let endDateParam = end.format('D-MMM-YYYY');
+                    const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+                    $.ajax({
+                        url:"/generate_employees_report/",
+                        type:"POST",
+                        data:{
+                            emp_startDateParam:startDateParam,
+                            emp_endDateParam:endDateParam,
+                            _token: CSRF_TOKEN
+                        },
+                        cache: false,
+                        success: function(response) {
+
+                            console.log(response);
+
+                        },
+                        failure: function (response) {
+                            swal.fire(
+                                "Internal Error",
+                                "Oops, Missing Something.",
+                                "error"
+                            )
+                        }
+                    })
+                }
+
+                $('#reportRange').daterangepicker({
+                    startDate: start,
+                    endDate: end,
+                    ranges: {
+                        'Today': [moment(), moment()],
+                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    }
+                }, dateRanger);
+
+                dateRanger(start, end);
+
+            });
+        </script>
     @endsection
 </x-app-layout>

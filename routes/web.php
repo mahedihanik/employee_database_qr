@@ -61,6 +61,8 @@ Route::put('/attendance_adjustment_update',[MonthlyAttendenceController::class,'
 Route::get('/attendance_adjustment_tab',[MonthlyAttendenceController::class,'attendanceAdjustmentTabInitial'])->middleware('auth')->name('attendanceAdjustmentTab');
 Route::post('/get_attendance_adjustment_tab',[MonthlyAttendenceController::class,'getAttendanceAdjustmentTabDataField'])->middleware('auth');
 Route::get('/report',[ReportController::class,'index'])->middleware('auth')->name('report.index');
+Route::post('/generate_employees_report',[ReportController::class,'generateEmployeesReport'])->middleware('auth');
+
 //route for remarks
 Route::post('store',[EmployeeController::class,'storecomment']);
 
