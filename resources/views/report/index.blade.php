@@ -18,7 +18,7 @@
                                             <label for="date">Please Select Date Range :</label>
                                             <div id="reportRange" style="background: #fff; cursor: pointer; padding: 6px 10px; border: 1px solid #ccc; border-radius: 5px; width: 80%">
                                                 <i class="fa fa-calendar ml-1"></i>&nbsp;
-                                                <span></span> <i class="fa fa-caret-down ml-20"></i>
+                                                <span></span> <i class="fa fa-caret-down"></i>
                                             </div>
                                         </div>
 
@@ -44,8 +44,8 @@
                 function dateRanger(start, end) {
 
                     $('#reportRange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-                    let startDateParam = start.format('D-MMM-YYYY');
-                    let endDateParam = end.format('D-MMM-YYYY');
+                    let startDateParam = start.format('YYYY-MM-D');
+                    let endDateParam = end.format('YYYY-MM-D');
                     const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
                     $.ajax({
@@ -59,7 +59,11 @@
                         cache: false,
                         success: function(response) {
 
-                            console.log(response);
+                            let filename = response.substring(response.lastIndexOf('/')+1);
+                            let link = document.createElement('a');
+                            link.href = window.location.origin+'/'+'reportPdf'+'/'+filename;
+                            link.download = "employees_report.pdf";
+                            link.click();
 
                         },
                         failure: function (response) {
