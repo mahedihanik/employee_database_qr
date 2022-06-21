@@ -16,14 +16,14 @@
                                     <div class="form-row pb-8">
                                         <div class="col">
                                             <label for="date">Please Select Date Range :</label>
-                                            <div id="reportRange" style="background: #fff; cursor: pointer; padding: 6px 10px; border: 1px solid #ccc; border-radius: 5px; width: 80%">
-                                                <i class="fa fa-calendar ml-1"></i>&nbsp;
-                                                <span></span> <i class="fa fa-caret-down"></i>
+                                            <div id="reportRange" style="background: #fff; cursor: pointer; padding: 6px 10px; border: 1px solid #ccc; border-radius: 5px; width: 70%">
+                                                <i class="fa fa-calendar"></i>&nbsp;
+                                                <span></span> <i class="fa fa-caret-down ml-5"></i>
                                             </div>
                                         </div>
 
                                     </div>
-{{--                                    <button type="submit" class="btn btn-success">Generate Report</button>--}}
+                                    <button id="generateReportButton" type="button" class="btn btn-success">Generate Report</button>
                             </div>
                         </div>
                     </div>
@@ -43,37 +43,36 @@
 
                 function dateRanger(start, end) {
 
-                    $('#reportRange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-                    let startDateParam = start.format('YYYY-MM-D');
-                    let endDateParam = end.format('YYYY-MM-D');
-                    const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                    $('#reportRange span').html(start.format('MMM D, YYYY') + ' - ' + end.format('MMM D, YYYY'));
 
-                    $.ajax({
-                        url:"/generate_employees_report/",
-                        type:"POST",
-                        data:{
-                            emp_startDateParam:startDateParam,
-                            emp_endDateParam:endDateParam,
-                            _token: CSRF_TOKEN
-                        },
-                        cache: false,
-                        success: function(response) {
+                    $("#generateReportButton").click(function(){
+                        let startDateParam = start.format('YYYY-MM-D');
+                        let endDateParam = end.format('YYYY-MM-D');
+                        const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
-                            let filename = response.substring(response.lastIndexOf('/')+1);
-                            let link = document.createElement('a');
-                            link.href = window.location.origin+'/'+'reportPdf'+'/'+filename;
-                            link.download = "employees_report.pdf";
-                            link.click();
+                        $.ajax({
+                            url:"/generate_employees_report/",
+                            type:"POST",
+                            data:{
+                                emp_startDateParam:startDateParam,
+                                emp_endDateParam:endDateParam,
+                                _token: CSRF_TOKEN
+                            },
+                            cache: false,
+                            success: function(response) {
+                                let filename = response.substring(response.lastIndexOf('/')+1);
+                                window.open(window.location.origin+'/'+'reportPdf'+'/'+filename);
+                            },
+                            failure: function (response) {
+                                swal.fire(
+                                    "Internal Error",
+                                    "Oops, Missing Something.",
+                                    "error"
+                                )
+                            }
+                        })
+                    });
 
-                        },
-                        failure: function (response) {
-                            swal.fire(
-                                "Internal Error",
-                                "Oops, Missing Something.",
-                                "error"
-                            )
-                        }
-                    })
                 }
 
                 $('#reportRange').daterangepicker({
@@ -86,7 +85,9 @@
                         'Last 30 Days': [moment().subtract(29, 'days'), moment()],
                         'This Month': [moment().startOf('month'), moment().endOf('month')],
                         'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                    }
+                    },
+                    //"showDropdowns": true,
+                    "opens": "left"
                 }, dateRanger);
 
                 dateRanger(start, end);

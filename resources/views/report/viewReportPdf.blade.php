@@ -1,16 +1,57 @@
+<?php
+//echo '<pre>'
+//print_r($returnArr);die();
+//
+//?>
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hi</title>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 2px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
 </head>
 <body>
-<h1>{{ $title }}</h1>
-<p>{{ $date }}</p>
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+<h2>HTML Table</h2>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Physical Office</th>
+        <th>WFH</th>
+        <th>WA</th>
+        <th>LA</th>
+        <th>Total No Of NDays</th>
+        <th>Total Hours</th>
+    </tr>
+    @foreach($returnArr as $mainKey => $arr)
+        <tr>
+
+                <td>{{$mainKey}}</td>
+            @foreach($arr as $arn)
+                <td>{{count(array_filter($arn, function($x) { return !empty($x); }))}}</td>
+            @endforeach
+                <td>DD</td>
+                <td>FF</td>
+
+        </tr>
+    @endforeach
+</table>
+
 </body>
 </html>
