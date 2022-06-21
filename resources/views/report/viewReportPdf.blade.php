@@ -86,9 +86,9 @@
                 $difference = $start_t ->diff($current_t );
                 $return_time = $difference ->format('%H:%I:%S');
                 if ($actualTime > $expectedTime){
-                    echo '<td>'.$return_time.'</td>';
+                    echo '<td style ="background-color: #b5e7a0">'.$return_time.'</td>';
                 }else{
-                    echo '<td>'.'-'.$return_time.'</td>';
+                    echo '<td style ="background-color: coral">'.'-'.$return_time.'</td>';
                 }
             @endphp
 
