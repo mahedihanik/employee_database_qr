@@ -185,6 +185,54 @@
                     }
                 })
             });
+
+            $('#leaveAdj_yes').click(function(e) {
+                Swal.fire({
+                    title: "Please select an option",
+                    html:'' +
+                        '<input class="form-control" type="radio" value="fullDay" name="leaveDaySplitAdj">' +' '+
+                        '<label>Full Day</label>' +' '+ '<input class="form-control" style="margin-left: 2rem" type="radio" value="halfDay" name="leaveDaySplitAdj">' + ' ' +'<label>Half Day</label>',
+                    showCancelButton: true,
+                    confirmButtonColor: "#17A2B8",
+                    confirmButtonText: "Adjust",
+                    cancelButtonText: "Cancel",
+                    cancelButtonColor: "#DC3545",
+                    buttonsStyling: true,
+                }).then(function (e){
+                    if(e.value === true){
+
+                        let leaveDaySplitAdj = $("input[name='leaveDaySplitAdj']:checked").val();
+                        let weekend_leave_adjust_employee_acc_no = $("#account_no_id").val();
+                        let en_date = $("#entryDate").val();
+                        const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                        $.ajax({
+                            url:"/leave_adjustment/",
+                            type:"POST",
+                            data:{
+                                leaveDaySplitAdj_param:leaveDaySplitAdj,
+                                weekend_leave_adjust_employee_acc_no_param:weekend_leave_adjust_employee_acc_no,
+                                entry_date_param:en_date,
+                                _token: CSRF_TOKEN
+                            },
+                            cache: false,
+                            success: function(response) {
+                                swal.fire(
+                                    "Success!",
+                                    "Your Adjustment has been saved!",
+                                    "success"
+                                )
+                            },
+                            failure: function (response) {
+                                swal.fire(
+                                    "Internal Error",
+                                    "Oops, your Adjustment was not saved.", // had a missing comma
+                                    "error"
+                                )
+                            }
+                        })
+                    }
+                })
+            });
         </script>
     @endsection
 </x-app-layout>

@@ -125,6 +125,22 @@ class MonthlyAttendenceController extends Controller
             return false;
         }
     }
+    public function leaveDayAdjustment(Request $request)
+    {
+
+        $dateSlice = explode('-',$request->entry_date_param);
+        $monthNum  = $dateSlice[1];
+        $dateObj   = DateTime::createFromFormat('!m', $monthNum);
+        $monthName = $dateObj->format('M');
+        $finalDateFormat = $dateSlice[2].'-'.$monthName.'-'.$dateSlice[0];
+        ($request->leaveDaySplitAdj_param == 'fullDay') ? $leaveCount = 1 : $leaveCount = 0.5;
+        $flag = MonthlyAttendence::where(['ac_no'=>$request->weekend_leave_adjust_employee_acc_no_param,'date'=>$finalDateFormat])->first()->update(['leave_adjustment'=>$leaveCount]);
+        if ($flag == 1){
+            return true;
+        }else{
+            return false;
+        }
+    }
     public function attendanceAdjustmentUpdate(Request $request)
     {
 //        echo '<pre>';

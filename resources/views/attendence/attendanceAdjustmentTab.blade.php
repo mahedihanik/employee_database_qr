@@ -116,7 +116,7 @@
                                             <label class="form-check-label" for="weekAdj_no">
                                                 No
                                             </label>
-                                            <span id="weekAdj_date_show_side" class="badge badge-info d-none"></span>
+                                            <span id="weekAdj_date_show_side" class="badge badge-danger ml-3 d-none"></span>
                                         </div>
                                     </div>
                                     <div class="form-row pb-8">
@@ -130,6 +130,7 @@
                                             <label class="form-check-label" for="leaveAdj_no">
                                                 No
                                             </label>
+                                            <span id="leaveAdj_show_side" class="badge badge-danger ml-3 d-none"></span>
                                         </div>
                                     </div>
                                     @if ($errors->any())
@@ -189,9 +190,10 @@
                             $("#work_time_tab").val(response.work_time);
                             $("#NDays_tab").val(response.ndays);
                             $("#att_time_tab").val(response.att_time);
+                            let dayCheckSplit = (response.leave_adjustment === 1) ? 'Full Day Leave' : 'Half Day Leave';
                             (response.wfh === 0 ? $("#wfh_no_tab").attr('checked',true):$("#wfh_yes_tab").attr('checked',true));
                             (response.weekend_adjustment === 0 ? $("#weekAdj_no_tab").attr('checked',true):$("#weekAdj_yes_tab").attr('checked',true)+$("#weekAdj_date_show_side").removeClass('d-none').html("Weekend Adjustment Date : "+response.weekend_adjustment_date));
-                            (response.leave_adjustment === 0 ? $("#leaveAdj_no_tab").attr('checked',true):$("#leaveAdj_yes_tab").attr('checked',true));
+                            (response.leave_adjustment === 0 ? $("#leaveAdj_no_tab").attr('checked',true):$("#leaveAdj_yes_tab").attr('checked',true)+$("#leaveAdj_show_side").removeClass('d-none').html("Leave Adjustment : "+dayCheckSplit));
                             $("#update_button_tab").removeClass('d-none');
                             console.log(response);
 
@@ -229,6 +231,54 @@
                                         weekend_acc_no:weekend_date_adjust_employee_acc_no,
                                         weekend_adj_date_new:weekend_date_adjust_new,
                                         entry_date:en_date,
+                                        _token: CSRF_TOKEN
+                                    },
+                                    cache: false,
+                                    success: function(response) {
+                                        swal.fire(
+                                            "Success!",
+                                            "Your Adjustment has been saved!",
+                                            "success"
+                                        )
+                                    },
+                                    failure: function (response) {
+                                        swal.fire(
+                                            "Internal Error",
+                                            "Oops, your Adjustment was not saved.", // had a missing comma
+                                            "error"
+                                        )
+                                    }
+                                })
+                            }
+                        })
+                    });
+
+                    $('#leaveAdj_yes_tab').click(function(e) {
+                        Swal.fire({
+                            title: "Please select an option",
+                            html:'' +
+                                '<input class="form-control" type="radio" value="fullDay" name="leaveDaySplitAdj">' +' '+
+                                '<label>Full Day</label>' +' '+ '<input class="form-control" style="margin-left: 2rem" type="radio" value="halfDay" name="leaveDaySplitAdj">' + ' ' +'<label>Half Day</label>',
+                            showCancelButton: true,
+                            confirmButtonColor: "#17A2B8",
+                            confirmButtonText: "Adjust",
+                            cancelButtonText: "Cancel",
+                            cancelButtonColor: "#DC3545",
+                            buttonsStyling: true,
+                        }).then(function (e){
+                            if(e.value === true){
+
+                                let leaveDaySplitAdj = $("input[name='leaveDaySplitAdj']:checked").val();
+                                let weekend_leave_adjust_employee_acc_no = $("#account_no_id").val();
+                                let en_date = $("#entryDateTab").val();
+                                const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                                $.ajax({
+                                    url:"/leave_adjustment/",
+                                    type:"POST",
+                                    data:{
+                                        leaveDaySplitAdj_param:leaveDaySplitAdj,
+                                        weekend_leave_adjust_employee_acc_no_param:weekend_leave_adjust_employee_acc_no,
+                                        entry_date_param:en_date,
                                         _token: CSRF_TOKEN
                                     },
                                     cache: false,

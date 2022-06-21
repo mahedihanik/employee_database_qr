@@ -35,26 +35,35 @@ class ReportController extends Controller
 
         $dataSetByDateRange = MonthlyAttendence::where(DB::raw('str_to_date(date, "%d-%M-%Y")'),'>=',$reportStartDate)->where(DB::raw('str_to_date(date, "%d-%M-%Y")'),'<=',$reportEndDate)->get()->groupBy('name')->toArray();
         $returnArr = [];
+        $returnArrNDays = [];
+        $returnWorkingHours = [];
+        $returnLeaveDays = [];
+
 //                        echo '<pre>';
 //                print_r($dataSetByDateRange);
 //        die();
 
         foreach ($dataSetByDateRange as $nameKey => $result) {
             foreach ($result as $key => $val){
-                $returnArr[$nameKey]['physical_office'][$key] = ($val['absent'] == '0');
+                //$returnArr[$nameKey]['physical_office'][$key] = ($val['absent'] == '0');
                 $returnArr[$nameKey]['work_from_home'][$key] = ($val['wfh'] == 1);
                 $returnArr[$nameKey]['weekend_adjustment'][$key] = ($val['weekend_adjustment'] == 1);
-                $returnArr[$nameKey]['leave_adjustment'][$key] = ($val['leave_adjustment'] == 1);
-               // $returnArr[$nameKey]['N_Days'][$key] = $val['ndays'];
-                //$returnArr[$nameKey]['Total_Working_Hours'][$key] = $val['att_time'] ;
+                $returnLeaveDays[$nameKey]['leave_adjustment'][$key] = $val['leave_adjustment'];
+                $returnArrNDays[$nameKey]['N_Days'][$key] = $val['ndays'];
+                $returnWorkingHours[$nameKey]['Total_Working_Hours'][$key] = $val['att_time'] ;
                // $returnArr[$nameKey]['remarks'][$key] = isset($val['remarks']) ;
 //                echo '<pre>';
 //                print_r($val['absent'].$nameKey);
             }
 
         }
+//        foreach($returnArr as $mainKey => $arr){
+//            echo '<pre>';
+//            print_r($returnArrNDays[$mainKey]['N_Days']);
+//        }
+//        die();
 
-//       foreach ($returnArr as $arr){
+       //foreach ($returnArr as $arr){
 //            $total = $arr['Total_Working_Hours'];
 //
 //            $sum = strtotime('00:00:00');
@@ -80,11 +89,47 @@ class ReportController extends Controller
 //
 //                print_r(count(array_filter($arn, function($x) { return !empty($x); })).$dd);
 //            }
-//        }
+           // if ($arr['N_Days'])
+
+                       //echo '<pre>';
+            //print_r(array_sum($arr['N_Days']));
 //
+        //}
+
 //die();
 
-        $pdf = PDF::loadView('report.viewReportPdf', compact('returnArr'))->setPaper('a4', 'landscape');
+        //echo '<pre>';
+       // print_r($returnArr);die();
+
+//        $newArr = [];
+//
+////        foreach ($arr as $dd => $arn){
+////            if (isset($nameKey[$keyNew])) {
+////                $nameKey[$keyNew][$dd] = count(array_filter($arn, function ($x) {
+////                    return !empty($x);
+////                }));
+////            }
+////        }
+//
+//        foreach($returnArr as  $keyNew => $arr){
+//
+////                foreach ($arr as $dd => $arn){
+////
+//                        $nameKey[$keyNew][$dd] = count(array_filter($arn, function ($x) {return !empty($x) ?? null;}));
+////                    }
+//            echo '<pre>';
+//            print_r($arr);
+//
+//
+//        }
+//
+////        echo '<pre>';
+////        print_r($newArr);
+//        die();
+
+
+
+        $pdf = PDF::loadView('report.viewReportPdf', compact('returnArr','returnArrNDays','returnWorkingHours','returnLeaveDays'))->setPaper('a4', 'landscape');
         $path = public_path('reportPdf');
         $fileName =  time().'.'.'pdf' ;
         $pdf->save($path . '/' . $fileName);

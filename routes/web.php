@@ -57,6 +57,7 @@ Route::get('showmyprofile/{id}',[EmployeeController::class,'myProfile'])->name('
 Route::get('showmyattendance/{id}',[EmployeeController::class,'myAttendance'])->name('employee.myAttendance')->middleware('auth');
 Route::get('attendance_adjustment/{data}',[MonthlyAttendenceController::class,'attendanceAdjustment'])->middleware('auth');
 Route::post('/weekend_attendance_adjustment',[MonthlyAttendenceController::class,'weekendAttendanceAdjustment'])->middleware('auth');
+Route::post('/leave_adjustment',[MonthlyAttendenceController::class,'leaveDayAdjustment'])->middleware('auth');
 Route::put('/attendance_adjustment_update',[MonthlyAttendenceController::class,'attendanceAdjustmentUpdate'])->middleware('auth');
 Route::get('/attendance_adjustment_tab',[MonthlyAttendenceController::class,'attendanceAdjustmentTabInitial'])->middleware('auth')->name('attendanceAdjustmentTab');
 Route::post('/get_attendance_adjustment_tab',[MonthlyAttendenceController::class,'getAttendanceAdjustmentTabDataField'])->middleware('auth');

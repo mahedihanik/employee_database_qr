@@ -119,15 +119,21 @@
                                      ?>
                                      <?php
                                      $leave_adjustment=$item->leave_adjustment;
-                                     if($leave_adjustment==1)
+                                     if($leave_adjustment == 1)
                                      {
-                                         echo '<td>', "Yes",'</td>';
+                                         echo '<td>', "Full",'</td>';
                                      }
-                                     elseif($leave_adjustment==0)
+                                     elseif((float)($leave_adjustment) == 0.5)
+                                     {
+                                         echo '<td>', "Half",'</td>';
+                                     }
+                                     elseif($leave_adjustment == 0)
                                      {
                                          echo '<td>', "No",'</td>';
                                      }
+
                                      ?>
+
 
                                     <!-- </td> -->
 
@@ -168,8 +174,8 @@
                     newDataSet['att_time']=data[10];
                     newDataSet['wfh']=data[11];
                     newDataSet['weekend_adj']=stripHtml(data[12]);
-                    newDataSet['leave_adj']=data[13];
-                    //console.log(stripHtml(data[12]));
+                    newDataSet['leave_adj']=(data[13]==='Full') ? 'Yes':(data[13]==='Half') ? 'Yes' : 'No';
+                    console.log(stripHtml(data[13]));
                     window.open("/attendance_adjustment/"+JSON.stringify(newDataSet),'_blank');
                     //window.location.href = "/attendance_adjustment/"+JSON.stringify(newDataSet);
                 } );

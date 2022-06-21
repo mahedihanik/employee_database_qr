@@ -44,34 +44,8 @@
                 function dateRanger(start, end) {
 
                     $('#reportRange span').html(start.format('MMM D, YYYY') + ' - ' + end.format('MMM D, YYYY'));
-
-                    $("#generateReportButton").click(function(){
-                        let startDateParam = start.format('YYYY-MM-D');
-                        let endDateParam = end.format('YYYY-MM-D');
-                        const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-
-                        $.ajax({
-                            url:"/generate_employees_report/",
-                            type:"POST",
-                            data:{
-                                emp_startDateParam:startDateParam,
-                                emp_endDateParam:endDateParam,
-                                _token: CSRF_TOKEN
-                            },
-                            cache: false,
-                            success: function(response) {
-                                let filename = response.substring(response.lastIndexOf('/')+1);
-                                window.open(window.location.origin+'/'+'reportPdf'+'/'+filename);
-                            },
-                            failure: function (response) {
-                                swal.fire(
-                                    "Internal Error",
-                                    "Oops, Missing Something.",
-                                    "error"
-                                )
-                            }
-                        })
-                    });
+                    localStorage.setItem("startDateLs",start.format('YYYY-MM-D'));
+                    localStorage.setItem("endDateLs",end.format('YYYY-MM-D'));
 
                 }
 
@@ -93,6 +67,38 @@
                 dateRanger(start, end);
 
             });
+
+            $("#generateReportButton").on( "click", function(e){
+                let startDateParam = localStorage.getItem("startDateLs");
+                let endDateParam = localStorage.getItem("endDateLs");
+                const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+                $.ajax({
+                    url:"/generate_employees_report/",
+                    type:"POST",
+                    data:{
+                        emp_startDateParam:startDateParam,
+                        emp_endDateParam:endDateParam,
+                        _token: CSRF_TOKEN
+                    },
+                    cache: false,
+                    success: function(response) {
+                        let filename = response.substring(response.lastIndexOf('/')+1);
+                        window.open(window.location.origin+'/'+'reportPdf'+'/'+filename);
+                        //localStorage.clear();
+                    },
+                    failure: function (response) {
+                        swal.fire(
+                            "Internal Error",
+                            "Oops, Missing Something.",
+                            "error"
+                        )
+                        localStorage.clear();
+                    }
+                })
+            });
+
+
         </script>
     @endsection
 </x-app-layout>
