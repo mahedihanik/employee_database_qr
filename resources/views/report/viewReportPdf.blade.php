@@ -40,7 +40,7 @@
         <th>Total Working Hours</th>
         <th>Weekly Average Hours</th>
         <th>Expected Working Hours</th>
-{{--        <th>Difference</th>--}}
+        <th>Difference</th>
     </tr>
     @foreach($returnArr as $mainKey => $arr)
         <tr>
@@ -79,15 +79,17 @@
                     $dt->setTime(8, 0);
                 echo '<td>'.$dt->format('H:i:s').'</td>';
 
-                //$expectedTime = $dt->format('H:i:s');
-               // $actualTime = date('H:i:s', $seconds/$days);
-
-
-               // echo $expectedTime.' '.$actualTime;die();
-
-
-
-                    //echo '<td>'.date('H:i:s', $interval).'</td>';
+                $expectedTime = $dt->format('H:i:s');
+                $actualTime = date('H:i:s', $seconds/$days);
+                $start_t = new DateTime($actualTime);
+                $current_t = new DateTime($expectedTime);
+                $difference = $start_t ->diff($current_t );
+                $return_time = $difference ->format('%H:%I:%S');
+                if ($actualTime > $expectedTime){
+                    echo '<td>'.$return_time.'</td>';
+                }else{
+                    echo '<td>'.'-'.$return_time.'</td>';
+                }
             @endphp
 
 
