@@ -1,5 +1,5 @@
 <?php
-//echo '<pre>'
+//echo '<pre>';
 //print_r($returnArr);die();
 //
 //?>
@@ -26,11 +26,19 @@
     </style>
 </head>
 <body>
-
-<h2>HTML Table</h2>
-
 <table>
     <tr>
+        <th style="padding: 20px" colspan="11">
+            <p style="font-size: large">Attendance Sheet ( {{$reportStartDate.' '.'to'.' '.$reportEndDate }} ) </p>
+            @foreach($returnArr as $mainKey => $arr)
+            <p>Total Working Days : {{array_sum($returnLeaveDays[$mainKey]['leave_adjustment'])+array_sum($returnArrNDays[$mainKey]['N_Days'])+count(array_filter($returnArr[$mainKey]['weekend_adjustment'], function ($x) {return !empty($x) ?? null;}))+count(array_filter($returnArr[$mainKey]['work_from_home'], function ($x) {return !empty($x) ?? null;}))}}</p>
+            @break;
+            @endforeach
+            <span>Total Executive: {{count($returnArr)}}</span><span>, Office Hour : {{$officeTimeStart->value.' '.'To'.' '.$officeTimeEnd->value}}</span>
+        </th>
+    </tr>
+    <tr>
+        <th>SL.NO.</th>
         <th>Name</th>
         <th>Physical Office</th>
         <th>Work From Home</th>
@@ -42,9 +50,13 @@
         <th>Expected Working Hours</th>
         <th>Difference</th>
     </tr>
+    @php
+        $sl = 1;
+    @endphp
     @foreach($returnArr as $mainKey => $arr)
         <tr>
-            <td>{{$mainKey}}</td>
+            <td>{{$sl}}</td>
+            <td width="100%">{{$mainKey}}</td>
             <td>{{array_sum($returnArrNDays[$mainKey]['N_Days'])}}</td>
             @foreach($arr as $arn)
                 <td>{{count(array_filter($arn, function($x) { return !empty($x); }))}}</td>
@@ -68,7 +80,8 @@
                             $minutes += $hours*60;
                             $seconds += $minutes*60;
                             date_default_timezone_set ("UTC");
-                    echo '<td>'.date('H:i:s', $seconds/$days).'</td>';
+                            $actualTime_N_Days = date('H:i:s', $seconds/$days);
+                    echo '<td>'.$actualTime_N_Days.'</td>';
                 }
                 else{
                     $dt = new DateTime;
@@ -77,7 +90,7 @@
                 }
                     $dt = new DateTime;
                     $dt->setTime(8, 0);
-                echo '<td>'.$dt->format('H:i:s').'</td>';
+                echo '<td>'.$expectedWorkingHours->value.'</td>';
 
                 $expectedTime = $dt->format('H:i:s');
                 $actualTime = date('H:i:s', $seconds/$days);
@@ -91,12 +104,10 @@
                     echo '<td style ="background-color: coral">'.'-'.$return_time.'</td>';
                 }
             @endphp
-
-
-
-
-
         </tr>
+    @php
+        $sl+=1;
+    @endphp
     @endforeach
 </table>
 

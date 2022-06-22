@@ -16,14 +16,15 @@
                                     <div class="form-row pb-8">
                                         <div class="col">
                                             <label for="date">Please Select Date Range :</label>
-                                            <div id="reportRange" style="background: #fff; cursor: pointer; padding: 6px 10px; border: 1px solid #ccc; border-radius: 5px; width: 70%">
+                                            <div id="reportRange" style="background: #fff; cursor: pointer; padding: 6px 10px; border: 1px solid #ccc; border-radius: 5px; width: 81.5%">
                                                 <i class="fa fa-calendar"></i>&nbsp;
-                                                <span></span> <i class="fa fa-caret-down ml-5"></i>
+                                                <span></span> <i class="fa fa-caret-down" style="margin-left: 6rem"></i>
                                             </div>
                                         </div>
 
                                     </div>
-                                    <button id="generateReportButton" type="button" class="btn btn-success">Generate Report</button>
+                                    <button id="generateReportButtonPDF" type="button" name="pdf" class="btn btn-warning">Generate Report PDF</button>
+                                    <button id="generateReportButtonExcel" type="button" name="excel" class="btn btn-success">Generate Report Excel</button>
                             </div>
                         </div>
                     </div>
@@ -68,9 +69,10 @@
 
             });
 
-            $("#generateReportButton").on( "click", function(e){
+            $("#generateReportButtonPDF").on( "click", function(e){
                 let startDateParam = localStorage.getItem("startDateLs");
                 let endDateParam = localStorage.getItem("endDateLs");
+                let type = "PDF"
                 const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
                 $.ajax({
@@ -79,6 +81,7 @@
                     data:{
                         emp_startDateParam:startDateParam,
                         emp_endDateParam:endDateParam,
+                        doc_typeParam:type,
                         _token: CSRF_TOKEN
                     },
                     cache: false,
@@ -86,6 +89,39 @@
                         let filename = response.substring(response.lastIndexOf('/')+1);
                         window.open(window.location.origin+'/'+'reportPdf'+'/'+filename);
                         //localStorage.clear();
+                    },
+                    failure: function (response) {
+                        swal.fire(
+                            "Internal Error",
+                            "Oops, Missing Something.",
+                            "error"
+                        )
+                        localStorage.clear();
+                    }
+                })
+            });
+            $("#generateReportButtonExcel").on( "click", function(e){
+                let startDateParam = localStorage.getItem("startDateLs");
+                let endDateParam = localStorage.getItem("endDateLs");
+                let type = "Excel"
+                const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+                $.ajax({
+                    url:"/generate_employees_report/",
+                    type:"POST",
+                    data:{
+                        emp_startDateParam:startDateParam,
+                        emp_endDateParam:endDateParam,
+                        doc_typeParam:type,
+                        _token: CSRF_TOKEN
+                    },
+                    cache: false,
+                    success: function(response) {
+                        // console.log(response);
+                        // let filename = response.substring(response.lastIndexOf('/')+1);
+                        // console.log(filename);
+                        // console.log(filename);
+                        window.open(response);
                     },
                     failure: function (response) {
                         swal.fire(

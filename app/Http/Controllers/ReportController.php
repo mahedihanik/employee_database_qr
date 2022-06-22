@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ReportExcelExport;
+use App\Exports\UserAttendenceExport;
 use App\Models\MonthlyAttendence;
+use App\Models\Setting;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
@@ -38,6 +43,7 @@ class ReportController extends Controller
         $returnArrNDays = [];
         $returnWorkingHours = [];
         $returnLeaveDays = [];
+        //$returnRemarks = [];
 
 //                        echo '<pre>';
 //                print_r($dataSetByDateRange);
@@ -51,17 +57,22 @@ class ReportController extends Controller
                 $returnLeaveDays[$nameKey]['leave_adjustment'][$key] = $val['leave_adjustment'];
                 $returnArrNDays[$nameKey]['N_Days'][$key] = $val['ndays'];
                 $returnWorkingHours[$nameKey]['Total_Working_Hours'][$key] = $val['att_time'] ;
-               // $returnArr[$nameKey]['remarks'][$key] = isset($val['remarks']) ;
+                //$returnRemarks[$nameKey]['remarks'] = isset($val['remarks']) ;
 //                echo '<pre>';
 //                print_r($val['absent'].$nameKey);
             }
+//                            echo '<pre>';
+//                print_r($result);
 
         }
 //        foreach($returnArr as $mainKey => $arr){
 //            echo '<pre>';
-//            print_r($returnArrNDays[$mainKey]['N_Days']);
+//            print_r($arr);
 //        }
-//        die();
+        //die();
+
+//        echo '<pre>';
+//        print_r($returnArr);die();
 
        //foreach ($returnArr as $arr){
 //            $total = $arr['Total_Working_Hours'];
@@ -129,11 +140,22 @@ class ReportController extends Controller
 
 
 
-        $pdf = PDF::loadView('report.viewReportPdf', compact('returnArr','returnArrNDays','returnWorkingHours','returnLeaveDays'))->setPaper('a4', 'landscape');
-        $path = public_path('reportPdf');
-        $fileName =  time().'.'.'pdf' ;
-        $pdf->save($path . '/' . $fileName);
-        return public_path('reportPdf/'.$fileName);
+
+        $officeTimeStart = Setting::select(['value'])->where(['settings_key'=>'office_time_start','id'=>3])->first();
+        $officeTimeEnd = Setting::select(['value'])->where(['settings_key'=>'office_time_end','id'=>4])->first();
+        $expectedWorkingHours = Setting::select(['value'])->where(['settings_key'=>'expected_working_hours','id'=>5])->first();
+
+        if ($request->doc_typeParam == "PDF"){
+            $pdf = PDF::loadView('report.viewReportPdf', compact('returnArr','returnArrNDays','returnWorkingHours','returnLeaveDays','reportStartDate','reportEndDate','officeTimeStart','officeTimeEnd','expectedWorkingHours'))->setPaper('a4', 'landscape');
+            $path = public_path('reportPdf');
+            $fileName =  time().'.'.'pdf' ;
+            $pdf->save($path . '/' . $fileName);
+            return public_path('reportPdf/'.$fileName);
+        }elseif ($request->doc_typeParam == "Excel"){
+              $excelFileName = 'Excel_Report'.time().'.'.'xlsx' ;
+              Excel::store(new ReportExcelExport($returnArr,$returnArrNDays,$returnWorkingHours,$returnLeaveDays,$reportStartDate,$reportEndDate,$officeTimeStart,$officeTimeEnd,$expectedWorkingHours), 'public/reportExcel/'.$excelFileName);
+              echo Storage::url('reportExcel/'.$excelFileName);
+        }
 
     }
 }
