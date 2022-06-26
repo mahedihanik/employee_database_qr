@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-6">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    {{ __('Attendence') }}
+                    {{ __('Attendence Management') }}
                 </h2>
             </div>
             <div class="col-md-6">

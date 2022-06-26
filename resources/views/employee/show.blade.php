@@ -200,7 +200,7 @@
           @if(!is_null($month))
           <input id="month" type="month" name="month" required value="{{$month}}">
           @else
-          <input id="month" type="month" name="month" required value="">
+          <input id="month" type="month" name="month" required value="{{date('Y-m')}}">
           @endif
          <span class="validity"></span>
 
@@ -323,113 +323,16 @@
                                       }
                                      ?>
 
-
-
                                     @if(\App\Http\Helpers\RoleCheck::roleCheckByLoggedInUser(auth()->id()) == "admin")
-                                     <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                          +
-
-                                       </button>
-
-                                        <!-- Modal -->
-
-
-                                            <!-- <a href="#" data-toggle="tooltip" title="{{$item->remarks}}">
-                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">Comment</button>
-
-
-                                                 <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLongTitle">Comment</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                               {{$item->remarks}}
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
-                                                            </div>
-                                                            </div>
-                                                        </div>
-                                                        </div>
-
-                                              </a> -->
-                                             <a href="#" data-toggle="tooltip" title="{{$item->remarks}}"  >
-
-                                             <i class="fas fa-comment"></i>
-                                             </a>
-
-
-                                                <!-- Generated markup by the plugin -->
-                                                <div class="tooltip bs-tooltip-top" role="tooltip">
-                                                <div class="arrow"></div>
-                                                <div class="tooltip-inner"  >
-                                                 <div class="modal-body">
-                                                    {{$item->remarks}}
-                                                  </div>
-                                                </div>
-                                                </div>
-
-
-
-
-
-                                                <!-- Generated markup by the plugin
-                                                <div class="tooltip bs-tooltip-top" role="tooltip">
-                                                <div class="arrow"></div>
-                                                <div class="tooltip-inner">
-
-
-
-                                                </div>
-                                                </div> -->
-
-
-                                        <form action= "{{ url ('store') }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="id" value="{{$item->id}}">
-                                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            @if(session('status'))
-                                               <div class= "alert alert-success">{{session('status')}}</div>
-                                            @endif
-                                            <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Add Comments</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-
-
-                                            <div class="modal-body">
-
-
-                                                <input type="text" name="remarks" style="width:100%;height:100px" placeholder="Write Comments" value="{{$item->remarks}}" >
-
-
-                                            </div>
-
-
-
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Save</button>
-                                            </div>
-
-                                            </div>
-                                        </div>
-                                        </div>
-                                     </form>
+                                     <td>
+                                         <button  type="button" class="remarkAddButton btn btn-dark" data-toggle="modal" data-id="{{$item->id}}"  data-item="{{$item->remarks}}" data-target="#exampleModalCenter">
+                                             +
+                                         </button>
+                                         @if($item->remarks != null)
+                                             <span data-toggle="tooltip" data-placement="top" title="{{$item->remarks}}"> <i class="far fa-comment-dots fa-lg ml-2"></i></span>
+                                         @endif
                                     </td>
                                     @endif
-
-
                                 </tr>
                         @endforeach
 
@@ -438,15 +341,63 @@
                     </table>
                 </div>
             </div>
+
+
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Add Remark</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action= "{{ url ('store') }}" method="POST">
+                            @csrf
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <p id="testP"></p>
+                                        <input id="hiddenAtt_id" type="hidden" name="id" value="">
+                                        <label for="message-text" class="col-form-label">Message:</label>
+                                        <textarea class="form-control" name="remarks" id="message-text" >{{$item->remarks != null ? $item->remarks : "Write your comment here .... "}}</textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-success">Save</button>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
  </section>
-
-            </div>
+</div>
 
   </div>
 </div>
-
+    @section('scripts')
+        <script>
+            $(".remarkAddButton").click(function () {
+                let monthly_att_id = $(this).data('id');
+                let remarks = $(this).data('item');
+                $("#hiddenAtt_id").val(monthly_att_id);
+                $("#testP").html(monthly_att_id);
+                $("#message-text").val(remarks);
+                //console.log(monthly_att_id+' '+remarks)
+            });
+        </script>
+        <script>
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+        </script>
+        <script src="{{asset('js/popper.min.js?v=7.0.5')}}"></script>
+    @endsection
 
 </x-app-layout>
+
+
