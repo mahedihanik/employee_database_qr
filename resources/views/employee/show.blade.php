@@ -356,7 +356,6 @@
                             @csrf
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <p id="testP"></p>
                                         <input id="hiddenAtt_id" type="hidden" name="id" value="">
                                         <label for="message-text" class="col-form-label">Message:</label>
                                         <textarea class="form-control" name="remarks" id="message-text" >{{$item->remarks != null ? $item->remarks : "Write your comment here .... "}}</textarea>
@@ -385,7 +384,6 @@
                 let monthly_att_id = $(this).data('id');
                 let remarks = $(this).data('item');
                 $("#hiddenAtt_id").val(monthly_att_id);
-                $("#testP").html(monthly_att_id);
                 $("#message-text").val(remarks);
                 //console.log(monthly_att_id+' '+remarks)
             });
