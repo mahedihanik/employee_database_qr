@@ -75,7 +75,7 @@
                                     @if(!is_null($month))
                                         <input id="month" type="month" name="month" required value="{{$month}}">
                                     @else
-                                        <input id="month" type="month" name="month" required value="">
+                                        <input id="month" type="month" name="month" required value="{{date('Y-m')}}">
                                     @endif
                                     <span class="validity"></span>
 

@@ -23,11 +23,11 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('employee.myProfile',\App\Http\Helpers\RoleCheck::findEmployeeIdByLoggedInUserId(auth()->id()))" :active="request()->routeIs('employee.myProfile',\App\Http\Helpers\RoleCheck::findEmployeeIdByLoggedInUserId(auth()->id()))">
+                        {{ __('My Profile') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('employee.index')" :active="request()->routeIs('employee.index')">
                         {{ __('Employees') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('employee.myProfile',\App\Http\Helpers\RoleCheck::findEmployeeIdByLoggedInUserId(auth()->id()))" :active="request()->routeIs('employee.myProfile',\App\Http\Helpers\RoleCheck::findEmployeeIdByLoggedInUserId(auth()->id()))">
-                        {{ __('Profile') }}
                     </x-nav-link>
 {{--                    <x-nav-link :href="route('employee.myAttendance',\App\Http\Helpers\RoleCheck::findEmployeeIdByLoggedInUserId(auth()->id()))" :active="request()->routeIs('employee.myAttendance',\App\Http\Helpers\RoleCheck::findEmployeeIdByLoggedInUserId(auth()->id()))">--}}
 {{--                        {{ __('Attendance') }}--}}
@@ -42,11 +42,6 @@
 {{--                    <x-nav-link :href="route('attendanceAdjustmentTab')" :active="request()->routeIs('attendanceAdjustmentTab')">--}}
 {{--                        {{ __('Attendance Adjustment') }}--}}
 {{--                    </x-nav-link>--}}
-                    <x-nav-link :href="route('report.index')" :active="request()->routeIs('report.index')">
-                        {{ __('Report') }}
-                    </x-nav-link>
-
-
 
                 </div>
                     <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -78,6 +73,11 @@
 
                             </x-slot>
                         </x-dropdown>
+                    </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-6 sm:flex">
+                        <x-nav-link :href="route('report.index')" :active="request()->routeIs('report.index')">
+                            {{ __('Report') }}
+                        </x-nav-link>
                     </div>
                 @endauth
             </div>
@@ -111,9 +111,6 @@
                         </form>
                         <x-dropdown-link :href="route('user.edit', auth()->id())">
                             {{ __('Change Password') }}
-                        </x-dropdown-link>
-                        <x-dropdown-link :href="route('logout')">
-                            {{ __('Setting') }}
                         </x-dropdown-link>
                     </x-slot>
                 </x-dropdown>
