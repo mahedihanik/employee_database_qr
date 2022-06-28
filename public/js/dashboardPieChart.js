@@ -19,10 +19,10 @@ const myChart1 = new Chart(ctx1, {
         }]
     },
     options: {
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
+        // scales: {
+        //     y: {
+        //         beginAtZero: true
+        //     }
+        // }
     }
 });

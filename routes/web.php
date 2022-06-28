@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReportController;
 use App\Http\Helpers\GenerateQrCode;
 use Illuminate\Support\Facades\Route;
@@ -28,9 +29,10 @@ require __DIR__.'/auth.php';
 //     return view('welcome');
 // });
 
-Route::get('/', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+//Route::get('/', function () {
+//    return view('dashboard');
+//})->middleware(['auth'])->name('dashboard');
+Route::get('/',[DashboardController::class,'index'])->name('dashboard')->middleware('auth');
 
 //Route::get('/attendance_adjustment_tab', function () {
 //    return view('attendence.attendanceAdjustmentTab');

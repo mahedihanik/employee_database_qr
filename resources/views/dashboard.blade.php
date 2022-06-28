@@ -14,38 +14,34 @@
                             <div class="col-md-12">
                                 <div class="form-row pb-8">
                                     <div class="col">
-                                        <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
-                                            <div class="card-header">Clock In</div>
+                                        <div class="shadow card bg-light mb-3 rounded" style="max-width: 18rem;text-align: center">
+                                            <div class="card-header" style="font-size: larger;text-align: left">Clock In</div>
                                             <div class="card-body">
-                                                <h5 class="card-title">Secondary card title</h5>
-                                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                                <h5 class="card-title" style="font-size: xxx-large">{{date('h:i A' ,strtotime($cardsArr['clock_in']))}}</h5>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
-                                            <div class="card-header">Clock Out</div>
+                                        <div class="shadow card bg-light mb-3 rounded" style="max-width: 18rem;text-align: center">
+                                            <div class="card-header" style="font-size: larger;text-align: left">Clock Out</div>
                                             <div class="card-body">
-                                                <h5 class="card-title">Secondary card title</h5>
-                                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                                <h5 class="card-title" style="font-size: xxx-large">{{date('h:i A' ,strtotime($cardsArr['clock_out']))}}</h5>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
-                                            <div class="card-header">Work Time</div>
+                                        <div class="shadow card bg-light mb-3 rounded" style="max-width: 18rem;text-align: center">
+                                            <div class="card-header" style="font-size: larger;text-align: left">Work Time</div>
                                             <div class="card-body">
-                                                <h5 class="card-title">Secondary card title</h5>
-                                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                                <h5 class="card-title" style="font-size: xxx-large">{{$cardsArr['working_hours'].' '.'H'}}</h5>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
-                                            <div class="card-header">Leave</div>
+                                        <div class="shadow card bg-light mb-3 rounded" style="max-width: 18rem;text-align: center">
+                                            <div class="card-header" style="font-size: larger;text-align: left">Late</div>
                                             <div class="card-body">
-                                                <h5 class="card-title">Secondary card title</h5>
-                                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                                <h5 class="card-title" style="font-size: xxx-large">{{$cardsArr['late'].' '.'H'}}</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -53,6 +49,8 @@
                                 <hr>
                                 <div class="form-row pb-8">
                                     <div class="col">
+                                        <img class="mt-5" src="{{asset('images/default-preview-qr.svg')}}">
+                                        <a href="#" class="btn btn-success" style="margin-left: 11rem">Download</a>
 
                                     </div>
                                     <div class="col">
