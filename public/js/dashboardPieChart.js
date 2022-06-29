@@ -1,24 +1,23 @@
-const ctx1 = document.getElementById('myChart1');
-const myChart1 = new Chart(ctx1, {
+const ctx1 = document.getElementById('pieChart');
+const pieChart = new Chart(ctx1, {
     type: 'pie',
     data: {
-        labels: [
-            'Red',
-            'Blue',
-            'Yellow'
-        ],
+        labels: [],
         datasets: [{
-            label: 'My First Dataset',
-            data: [300, 50, 100],
+            label: 'Current Month Activities History',
+            data: [],
             backgroundColor: [
                 'rgb(255, 99, 132)',
                 'rgb(54, 162, 235)',
-                'rgb(255, 205, 86)'
+                'rgb(255, 205, 86)',
+                'rgb(75, 192, 192)'
             ],
             hoverOffset: 4
         }]
     },
     options: {
+        responsive: true,
+        maintainAspectRatio: false,
         // scales: {
         //     y: {
         //         beginAtZero: true
@@ -26,3 +25,26 @@ const myChart1 = new Chart(ctx1, {
         // }
     }
 });
+
+$.ajax({
+    url:"/get_dashboard_pie_chart/",
+    type:"GET",
+    cache: false,
+    success: function(response) {
+        response[0].splice(3,1);
+        response[1].splice(3,1);
+        pieChart.data.labels= response[0]
+        pieChart.data.datasets[0].data=response[1]
+        pieChart.update()
+        console.log(response);
+    },
+    failure: function (response) {
+        swal.fire(
+            "Pie Chart Internal Error",
+            "Oops, Missing Something.",
+            "error"
+        )
+        localStorage.clear();
+    }
+})
+

@@ -1,11 +1,11 @@
-const ctx = document.getElementById('myChart');
-const myChart = new Chart(ctx, {
+const ctx = document.getElementById('barChart');
+const barChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: [],
         datasets: [{
-            label: 'Weekly Average Working Hours',
-            data: [12, 19, 3, 5, 2, 3],
+            label: 'Daily Working Hours ( Current Month )',
+            data: [],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -29,7 +29,27 @@ const myChart = new Chart(ctx, {
         scales: {
             y: {
                 beginAtZero: true
-            }
+            },
         }
     }
 });
+
+$.ajax({
+    url:"/get_dashboard_bar_chart/",
+    type:"GET",
+    cache: false,
+    success: function(response) {
+        barChart.data.labels= response[0]
+        barChart.data.datasets[0].data=response[1]
+        barChart.update()
+       //console.log(response);
+    },
+    failure: function (response) {
+        swal.fire(
+            "Bar Chart Internal Error",
+            "Oops, Missing Something.",
+            "error"
+        )
+        localStorage.clear();
+    }
+})

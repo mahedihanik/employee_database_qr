@@ -65,7 +65,8 @@ Route::get('/attendance_adjustment_tab',[MonthlyAttendenceController::class,'att
 Route::post('/get_attendance_adjustment_tab',[MonthlyAttendenceController::class,'getAttendanceAdjustmentTabDataField'])->middleware('auth');
 Route::get('/report',[ReportController::class,'index'])->middleware('auth')->name('report.index');
 Route::post('/generate_employees_report',[ReportController::class,'generateEmployeesReport'])->middleware('auth');
-
+Route::get('/get_dashboard_bar_chart',[DashboardController::class,'getDashboardBarChartData'])->middleware('auth');
+Route::get('/get_dashboard_pie_chart',[DashboardController::class,'getDashboardPieChartData'])->middleware('auth');
 //route for remarks
 Route::post('store',[EmployeeController::class,'storecomment']);
 
