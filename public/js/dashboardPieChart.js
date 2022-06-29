@@ -15,9 +15,17 @@ const pieChart = new Chart(ctx1, {
             hoverOffset: 4
         }]
     },
-    options: {
+    plugins: [ChartDataLabels],
+    options:
+        {
         responsive: true,
         maintainAspectRatio: false,
+            plugins: {
+                // Change options for ALL labels of THIS CHART
+                datalabels: {
+                    color: '#FFFFFF'
+                }
+            }
         // scales: {
         //     y: {
         //         beginAtZero: true

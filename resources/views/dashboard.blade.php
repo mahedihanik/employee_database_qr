@@ -66,7 +66,7 @@
                                     </div>
                                     <div class="verticalLine mt-4"></div>
                                     <div class="col">
-                                        <canvas id="pieChart" class="mt-5"></canvas>
+                                        <canvas id="pieChart" class="mt-1"></canvas>
                                     </div>
                                 </div>
                                 <hr>
@@ -84,10 +84,10 @@
     </div>
     @section('scripts')
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js" integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
         <script src="{{asset('js/dashboardPieChart.js?v=7.0.5')}}"></script>
         <script src="{{asset('js/dashboardBarChart.js?v=7.0.5')}}"></script>
-
 
     @endsection
 </x-app-layout>

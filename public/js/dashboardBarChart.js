@@ -25,6 +25,7 @@ const barChart = new Chart(ctx, {
             borderWidth: 1
         }]
     },
+    plugins: [ChartDataLabels],
     options: {
         scales: {
             y: {
