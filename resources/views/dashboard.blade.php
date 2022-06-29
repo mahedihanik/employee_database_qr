@@ -26,7 +26,10 @@
                                 <div class="form-row pb-8">
                                     <div class="col">
                                         <div class="shadow card bg-light mb-3 rounded" style="max-width: 18rem;text-align: center">
-                                            <div class="card-header" style="font-size: larger;text-align: left">Clock In</div>
+                                            <div class="card-header" style="font-size: larger;text-align: left">Clock In
+                                                <hr>
+                                                <span class="badge badge-info" style="font-size: small;text-align: left">22-Jun-2022</span>
+                                            </div>
                                             <div class="card-body">
                                                 <h5 class="card-title" style="font-size: xxx-large">{{date('h:i A' ,strtotime($cardsArr['clock_in']))}}</h5>
                                             </div>
@@ -34,7 +37,10 @@
                                     </div>
                                     <div class="col">
                                         <div class="shadow card bg-light mb-3 rounded" style="max-width: 18rem;text-align: center">
-                                            <div class="card-header" style="font-size: larger;text-align: left">Clock Out</div>
+                                            <div class="card-header" style="font-size: larger;text-align: left">Clock Out
+                                                <hr>
+                                                <span class="badge badge-info" style="font-size: small;text-align: left">22-Jun-2022</span>
+                                            </div>
                                             <div class="card-body">
                                                 <h5 class="card-title" style="font-size: xxx-large">{{date('h:i A' ,strtotime($cardsArr['clock_out']))}}</h5>
                                             </div>
@@ -42,7 +48,10 @@
                                     </div>
                                     <div class="col">
                                         <div class="shadow card bg-light mb-3 rounded" style="max-width: 18rem;text-align: center">
-                                            <div class="card-header" style="font-size: larger;text-align: left">Work Time</div>
+                                            <div class="card-header" style="font-size: larger;text-align: left">Work Time
+                                                <hr>
+                                                <span class="badge badge-info" style="font-size: small;text-align: left">22-Jun-2022</span>
+                                            </div>
                                             <div class="card-body">
                                                 <h5 class="card-title" style="font-size: xxx-large">{{$cardsArr['working_hours'].' '.'H'}}</h5>
                                             </div>
@@ -50,7 +59,10 @@
                                     </div>
                                     <div class="col">
                                         <div class="shadow card bg-light mb-3 rounded" style="max-width: 18rem;text-align: center">
-                                            <div class="card-header" style="font-size: larger;text-align: left">Late</div>
+                                            <div class="card-header" style="font-size: larger;text-align: left">Late
+                                                <hr>
+                                                <span class="badge badge-info" style="font-size: small;text-align: left">22-Jun-2022</span>
+                                            </div>
                                             <div class="card-body">
                                                 <h5 class="card-title" style="font-size: xxx-large">{{$cardsArr['late'].' '.'H'}}</h5>
                                             </div>
