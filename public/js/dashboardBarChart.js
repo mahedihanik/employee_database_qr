@@ -29,7 +29,17 @@ const barChart = new Chart(ctx, {
     options: {
         scales: {
             y: {
-                beginAtZero: true
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Working Hours'
+                }
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: 'Working Date'
+                }
             },
         }
     }

@@ -14,10 +14,11 @@ class DashboardController extends Controller
         $id = RoleCheck::findEmployeeIdByLoggedInUserId(auth()->id());
         $cardData = MonthlyAttendence::where(['ac_no'=>$id])->latest(DB::raw('str_to_date(date, "%d-%M-%Y")'))->first();
         $cardsArr = [];
-        $cardsArr['clock_in'] = $cardData->clock_in;
-        $cardsArr['clock_out'] = $cardData->clock_out;
-        $cardsArr['working_hours'] = $cardData->att_time;
-        $cardsArr['late'] = $cardData->late;
+        $cardsArr['clock_in'] = $cardData->clock_in ?? null;
+        $cardsArr['clock_out'] = $cardData->clock_out ?? null;
+        $cardsArr['working_hours'] = $cardData->att_time ?? null;
+        $cardsArr['late'] = $cardData->late ?? null;
+        $cardsArr['date'] = $cardData->date ?? null;
         return view('dashboard',compact('cardsArr'));
     }
 

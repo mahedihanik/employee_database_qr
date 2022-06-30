@@ -7,8 +7,46 @@
 
         }
         .verticalLine {
-            border-left: 2px solid rgba(0,0,0,.1);
+            border-left: 2px solid rgba(0,0,0,0.1);
         }
+        .dropbtn {
+            background-color: #20c997;
+            color: white;
+            padding: 7px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropbtn:hover, .dropbtn:focus {
+            background-color: #20c997;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            overflow: auto;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 4;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown a:hover {background-color: #ddd;}
+
+        .show {display: block;}
     </style>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -28,7 +66,7 @@
                                         <div class="shadow card bg-light mb-3 rounded" style="max-width: 18rem;text-align: center">
                                             <div class="card-header" style="font-size: larger;text-align: left">Clock In
                                                 <hr>
-                                                <span class="badge badge-info" style="font-size: small;text-align: left">22-Jun-2022</span>
+                                                <span style="font-size: small;text-align: left">{{$cardsArr['date']}}</span>
                                             </div>
                                             <div class="card-body">
                                                 <h5 class="card-title" style="font-size: xxx-large">{{date('h:i A' ,strtotime($cardsArr['clock_in']))}}</h5>
@@ -39,7 +77,7 @@
                                         <div class="shadow card bg-light mb-3 rounded" style="max-width: 18rem;text-align: center">
                                             <div class="card-header" style="font-size: larger;text-align: left">Clock Out
                                                 <hr>
-                                                <span class="badge badge-info" style="font-size: small;text-align: left">22-Jun-2022</span>
+                                                <span style="font-size: small;text-align: left">{{$cardsArr['date']}}</span>
                                             </div>
                                             <div class="card-body">
                                                 <h5 class="card-title" style="font-size: xxx-large">{{date('h:i A' ,strtotime($cardsArr['clock_out']))}}</h5>
@@ -50,7 +88,7 @@
                                         <div class="shadow card bg-light mb-3 rounded" style="max-width: 18rem;text-align: center">
                                             <div class="card-header" style="font-size: larger;text-align: left">Work Time
                                                 <hr>
-                                                <span class="badge badge-info" style="font-size: small;text-align: left">22-Jun-2022</span>
+                                                <span style="font-size: small;text-align: left">{{$cardsArr['date']}}</span>
                                             </div>
                                             <div class="card-body">
                                                 <h5 class="card-title" style="font-size: xxx-large">{{$cardsArr['working_hours'].' '.'H'}}</h5>
@@ -61,7 +99,7 @@
                                         <div class="shadow card bg-light mb-3 rounded" style="max-width: 18rem;text-align: center">
                                             <div class="card-header" style="font-size: larger;text-align: left">Late
                                                 <hr>
-                                                <span class="badge badge-info" style="font-size: small;text-align: left">22-Jun-2022</span>
+                                                <span style="font-size: small;text-align: left">{{$cardsArr['date']}}</span>
                                             </div>
                                             <div class="card-body">
                                                 <h5 class="card-title" style="font-size: xxx-large">{{$cardsArr['late'].' '.'H'}}</h5>
@@ -72,20 +110,41 @@
                                 <hr>
                                 <div class="form-row pb-8">
                                     <div class="col">
-                                        <img height="360px" width="360px" style="margin-left: 6rem" src="{{asset('images/default-preview-qr.svg')}}">
-                                        <a href="#" class="btn btn-success" style="margin-left: 14rem">Download</a>
+                                        <img height="300px" width="300px" style="margin-left: 6rem" src="{{asset('images/default-preview-qr.svg')}}">
+                                        <a href="#" class="btn btn-success" style="margin-left: 12.5rem">Download</a>
 
                                     </div>
                                     <div class="verticalLine mt-4"></div>
                                     <div class="col">
                                         <canvas id="pieChart" class="mt-1"></canvas>
                                     </div>
+
+                                        <div class="dropdown">
+                                          <button onclick="myFunction()" class="dropbtn">Select Range <i class="fas fa-ellipsis-h"></i></button>
+                                          <div id="myDropdown" class="dropdown-content mt-1">
+                                            <a href="">1 Month</a>
+                                            <a href="">3 Months</a>
+                                            <a href="">6 Months</a>
+                                            <a href="">1 Year</a>
+                                          </div>
+                                        </div>
+
                                 </div>
                                 <hr>
                                 <div class="form-row pb-8">
+                                    <div class="dropdown ml-auto">
+                                        <button onclick="myFunctionBar()" class="dropbtn">Select Range <i class="fas fa-ellipsis-h"></i></button>
+                                        <div id="myDropdownBar" class="dropdown-content mt-1">
+                                            <a href="">1 Month</a>
+                                            <a href="">3 Months</a>
+                                            <a href="">6 Months</a>
+                                            <a href="">1 Year</a>
+                                        </div>
+                                    </div>
                                     <div class="col">
                                         <canvas id="barChart"  height="150" class="mt-5"></canvas>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -95,6 +154,30 @@
         </div>
     </div>
     @section('scripts')
+        <script>
+            /* When the user clicks on the button,
+            toggle between hiding and showing the dropdown content */
+            function myFunction() {
+                document.getElementById("myDropdown").classList.toggle("show");
+            }
+            function myFunctionBar() {
+                document.getElementById("myDropdownBar").classList.toggle("show");
+            }
+
+            // Close the dropdown if the user clicks outside of it
+            window.onclick = function(event) {
+                if (!event.target.matches('.dropbtn')) {
+                    var dropdowns = document.getElementsByClassName("dropdown-content");
+                    var i;
+                    for (i = 0; i < dropdowns.length; i++) {
+                        var openDropdown = dropdowns[i];
+                        if (openDropdown.classList.contains('show')) {
+                            openDropdown.classList.remove('show');
+                        }
+                    }
+                }
+            }
+        </script>
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>

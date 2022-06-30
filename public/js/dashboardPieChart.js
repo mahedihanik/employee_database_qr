@@ -24,6 +24,10 @@ const pieChart = new Chart(ctx1, {
                 // Change options for ALL labels of THIS CHART
                 datalabels: {
                     color: '#FFFFFF'
+                },
+                title: {
+                    display: true,
+                    text: 'Custom Chart Title'
                 }
             }
         // scales: {

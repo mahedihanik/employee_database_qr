@@ -91,3 +91,8 @@ Route::get('/employee/verification/{id}', [EmployeeVerificationController::class
 Route::post('/attendence/create',[MonthlyAttendenceController::class,'import'])->name('monthly_attendence.import');
 
 
+//test route
+Route::get('/testing',[\App\Http\Controllers\TestController::class,'test']);
+
+
+
