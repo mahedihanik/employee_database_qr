@@ -200,7 +200,7 @@ class EmployeeController extends Controller
 
         $searchItem = date("M-Y",strtotime($request->month));
 
-        $employee = Employee::find($id);
+        $employee = Employee::where(['employee_id'=>$id])->first();
         $query=MonthlyAttendence::where('ac_no',$employee->employee_id);
 
         if(!is_null($month)){

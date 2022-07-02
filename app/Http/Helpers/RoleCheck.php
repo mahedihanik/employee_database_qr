@@ -9,7 +9,10 @@ class RoleCheck
 {
     public static function permissionCheck($emp_id)
     {
-        $role = Employee::select('employee_role')->where('id', $emp_id)->first();
+        $role = Employee::select('employee_role')->where('employee_id', $emp_id)->first();
+
+//        echo '<pre>';
+//        print_r($emp_id);die();
 
         return $role->employee_role;
 

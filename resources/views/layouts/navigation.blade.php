@@ -62,23 +62,26 @@
                                 <x-dropdown-link style="text-decoration: none; color: inherit" :href="route('employee.myAttendance',\App\Http\Helpers\RoleCheck::findEmployeeIdByLoggedInUserId(auth()->id()))" :active="request()->routeIs('employee.myAttendance',\App\Http\Helpers\RoleCheck::findEmployeeIdByLoggedInUserId(auth()->id()))">
                                     {{ __('My Attendance') }}
                                 </x-dropdown-link>
+                                @if(\App\Http\Helpers\RoleCheck::roleCheckByLoggedInUser(auth()->id()) == 'admin')
+                                    <x-dropdown-link style="text-decoration: none; color: inherit" :href="route('monthly_attendence.index')" :active="request()->routeIs('monthly_attendence.index')">
+                                        {{ __('Attendance Management') }}
+                                    </x-dropdown-link>
 
-                                <x-dropdown-link style="text-decoration: none; color: inherit" :href="route('monthly_attendence.index')" :active="request()->routeIs('monthly_attendence.index')">
-                                    {{ __('Attendance Management') }}
-                                </x-dropdown-link>
-
-                                <x-dropdown-link style="text-decoration: none ;color: inherit" :href="route('attendanceAdjustmentTab')" :active="request()->routeIs('attendanceAdjustmentTab')">
-                                    {{ __('Attendance Adjustment') }}
-                                </x-dropdown-link>
+                                    <x-dropdown-link style="text-decoration: none ;color: inherit" :href="route('attendanceAdjustmentTab')" :active="request()->routeIs('attendanceAdjustmentTab')">
+                                        {{ __('Attendance Adjustment') }}
+                                    </x-dropdown-link>
+                                @endif
 
                             </x-slot>
                         </x-dropdown>
                     </div>
-                    <div class="hidden space-x-8 sm:-my-px sm:ml-6 sm:flex">
-                        <x-nav-link :href="route('report.index')" :active="request()->routeIs('report.index')">
-                            {{ __('Report') }}
-                        </x-nav-link>
-                    </div>
+                    @if(\App\Http\Helpers\RoleCheck::roleCheckByLoggedInUser(auth()->id()) == 'admin')
+                        <div class="hidden space-x-8 sm:-my-px sm:ml-6 sm:flex">
+                            <x-nav-link :href="route('report.index')" :active="request()->routeIs('report.index')">
+                                {{ __('Report') }}
+                            </x-nav-link>
+                        </div>
+                    @endif
                 @endauth
             </div>
 

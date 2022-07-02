@@ -43,11 +43,17 @@ $.ajax({
     type:"GET",
     cache: false,
     success: function(response) {
-        response[0].splice(3,1);
-        response[1].splice(3,1);
-        pieChart.data.labels= response[0]
-        pieChart.data.datasets[0].data=response[1]
-        pieChart.update()
+        if (response[0].length === 0 && response[1].length === 0){
+            console.log(response);
+
+        }else{
+            response[0].splice(3,1);
+            response[1].splice(3,1);
+            pieChart.data.labels= response[0]
+            pieChart.data.datasets[0].data=response[1]
+            pieChart.update()
+        }
+
         console.log(response);
     },
     failure: function (response) {
