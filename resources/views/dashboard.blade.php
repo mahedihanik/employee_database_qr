@@ -110,8 +110,11 @@
                                 <hr>
                                 <div class="form-row pb-8">
                                     <div class="col">
-                                        <img height="300px" width="300px" style="margin-left: 6rem" src="{{asset('images/default-preview-qr.svg')}}">
-                                        <a href="#" class="btn btn-success" style="margin-left: 12.5rem">Download</a>
+                                        @php
+                                            $userQrCode = \App\Http\Helpers\RoleCheck::getLoggedInUserQrCode(auth()->id());
+                                        @endphp
+                                        <img class="mt-2" height="300px" width="300px" style="margin-left: 6rem" src="{{asset('storage/'.$userQrCode)}}">
+                                        <a href="{{ route('qrdownload', auth()->id()) }}" class="btn btn-success mt-2" style="margin-left: 12.5rem">Download</a>
 
                                     </div>
                                     <div class="verticalLine mt-4"></div>

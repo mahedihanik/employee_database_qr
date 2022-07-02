@@ -157,12 +157,15 @@ class MonthlyAttendenceController extends Controller
     public function attendanceAdjustmentTabInitial()
     {
         $todayDate = date('Y-m-d');
-        $empNameList = Employee::select('name')->where(['active'=> 1, 'primary_account' => 1])->get()->toArray();
-        $empNameFinalList = [];
-        foreach ($empNameList as $empName){
-            array_push($empNameFinalList,$empName['name']);
-        }
-        return view('attendence.attendanceAdjustmentTab', compact('empNameFinalList','todayDate'));
+        $empNameList = Employee::select('name','employee_id')->where(['active'=> 1, 'primary_account' => 1])->get()->toArray();
+//        echo '<pre>';
+//        print_r($empNameList);
+//        die();
+//        $empNameFinalList = [];
+//        foreach ($empNameList as $empName){
+//            array_push($empNameFinalList,$empName['name']);
+//        }
+        return view('attendence.attendanceAdjustmentTab', compact('empNameList','todayDate'));
 
     }
 
@@ -174,10 +177,8 @@ class MonthlyAttendenceController extends Controller
         $dateObj   = DateTime::createFromFormat('!m', $monthNum);
         $monthName = $dateObj->format('M');
         $finalDateFormat = $dateSlice[2].'-'.$monthName.'-'.$dateSlice[0];
-        $dataListEmpTab = MonthlyAttendence::where('name', 'like', '%' . $request->employeeNameTabFormParam . '%')->where('date',$finalDateFormat)->first()->toArray();
+        $dataListEmpTab = MonthlyAttendence::where('ac_no', 'like', '%' . $request->employeeIdTabFormParam . '%')->where('date',$finalDateFormat)->first()->toArray();
         return $dataListEmpTab;
-
-
     }
 
 }

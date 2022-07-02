@@ -42,10 +42,10 @@
                                         </div>
                                         <div class="col">
                                             <label for="employee_name">Employee Name</label>
-                                            <select class="js-example-basic-single" style="width: 100%" name="employeeNameSelect">
+                                            <select id="adjustmentSelect" class="js-example-basic-single" style="width: 100%" name="employeeNameSelect">
                                                 <option value="">Select Employee Name</option>
-                                                @foreach($empNameFinalList as $empName)
-                                                    <option value="AL">{{$empName}}</option>
+                                                @foreach($empNameList as $emp)
+                                                    <option value="{{$emp['employee_id']}}">{{$emp['name']}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -158,6 +158,7 @@
             $('.js-example-basic-single').select2();
             $("#entryDateTab").change(function(){
                 let employee_name = $(".select2-selection__rendered").text();
+                let employee_id = $("#adjustmentSelect").val();
                 if(employee_name === 'Select Employee Name' || employee_name === null){
                             swal.fire(
                                 "User Error",
@@ -168,6 +169,7 @@
                 else
                 {
                     let employeeNameTabForm = employee_name;
+                    let employeeIdTabForm = employee_id;
                     let entryDateTabForm = $("#entryDateTab").val();
                     const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
@@ -175,6 +177,7 @@
                         url:"/get_attendance_adjustment_tab/",
                         type:"POST",
                         data:{
+                            employeeIdTabFormParam:employeeIdTabForm,
                             employeeNameTabFormParam:employeeNameTabForm,
                             entryDateTabFormParam:entryDateTabForm,
                             _token: CSRF_TOKEN

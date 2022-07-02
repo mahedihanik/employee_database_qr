@@ -18,7 +18,7 @@
                                             <label for="date">Please Select Date Range :</label>
                                             <div id="reportRange" style="background: #fff; cursor: pointer; padding: 6px 10px; border: 1px solid #ccc; border-radius: 5px; width: 81.5%">
                                                 <i class="fa fa-calendar"></i>&nbsp;
-                                                <span></span> <i class="fa fa-caret-down" style="margin-left: 6rem"></i>
+                                                <span></span> <i class="fa fa-caret-down" style="margin-left: 8rem"></i>
                                             </div>
                                         </div>
 

@@ -137,6 +137,7 @@
                         </div>
                     </div>
                 </div>
+@if(\App\Http\Helpers\RoleCheck::roleCheckByLoggedInUser(auth()->id()) == "admin")
  <section>
      <hr>
     <div class="py-12">
@@ -374,6 +375,7 @@
     </div>
 
  </section>
+@endif
 </div>
 
   </div>

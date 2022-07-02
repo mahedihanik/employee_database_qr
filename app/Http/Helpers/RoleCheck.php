@@ -31,4 +31,19 @@ class RoleCheck
 
     }
 
+    public static function getLoggedInUserProfileImage($user_id)
+    {
+        $user = User::select('emp_id')->where('id', $user_id)->first();
+        $empInfo = Employee::select('image')->where('employee_id', $user->emp_id)->first();
+        return $empInfo->image;
+
+    }
+    public static function getLoggedInUserQrCode($user_id)
+    {
+        $user = User::select('emp_id')->where('id', $user_id)->first();
+        $empInfo = Employee::select('qrimage')->where('employee_id', $user->emp_id)->first();
+        return $empInfo->qrimage;
+
+    }
+
 }

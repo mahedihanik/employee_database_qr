@@ -8,16 +8,14 @@ use Illuminate\Support\Facades\Response;
 
 class QrController extends Controller
 {
-    public function download($id) 
+    public function download($id)
     {
         $employee = Employee::find($id);
-        $qrpath = public_path("/storage/qrcode/".$employee->employee_id.".png");
-        // return $qrpath;
+        $qrpath = public_path("/storage/".$employee->qrimage);
         $filename = $employee->employee_id.".png";
 
         if (file_exists($qrpath))
         {
-            // Send Download
             return Response::download($qrpath, $filename, [
                 'Content-Length: '. filesize($qrpath)
             ]);
