@@ -65,10 +65,10 @@
                                             <label for="absent">Absent</label>
                                             <input type="text" class="form-control" name="absent" value="{{$infoSet->absent}}">
                                         </div>
-                                        <div class="col">
-                                            <label for="work_time">Work Time</label>
-                                            <input type="text" class="form-control" name="work_time" value="{{$infoSet->work_time}}" readonly>
-                                        </div>
+{{--                                        <div class="col">--}}
+{{--                                            <label for="work_time">Work Time</label>--}}
+{{--                                            <input type="text" class="form-control" name="work_time" value="{{$infoSet->work_time}}" readonly>--}}
+{{--                                        </div>--}}
                                         <div class="col">
                                             <label for="date">NDays</label>
                                             <input type="text" class="form-control" name="n_days" value="{{$infoSet->NDays}}" readonly>
@@ -77,6 +77,16 @@
                                             <label for="date">ATT_Time</label>
                                             <input type="text" class="form-control" name="att_time" value="{{$infoSet->att_time}}" readonly>
                                         </div>
+                                    </div>
+                                    <div class="form-row pb-8">
+                                        <div class="col">
+                                            <label for="absent">Remarks</label>
+                                            <textarea class="form-control" name="re_marks" rows="3">{{$infoSet->remarks}}</textarea>
+                                        </div>
+                                        {{--                                        <div class="col">--}}
+                                        {{--                                            <label for="work_time">Work Time</label>--}}
+                                        {{--                                            <input type="text" class="form-control" name="work_time" value="{{$infoSet->work_time}}" readonly>--}}
+                                        {{--                                        </div>--}}
                                     </div>
                                     <div class="form-row pb-8">
                                         <div class="col">
@@ -140,6 +150,9 @@
         <script>
 
             $('#weekAdj_yes').click(function(e) {
+
+                $('input[name=wfh][value="No"]').prop('checked', true);
+                $('input[name=leaveAdj][value="No"]').prop('checked', true);
                 Swal.fire({
                     title: "Please enter the date",
                     html:'<input type="date" id="weekend_date_adjust" class="form-control" autofocus>',
@@ -187,6 +200,8 @@
             });
 
             $('#leaveAdj_yes').click(function(e) {
+                $('input[name=wfh][value="No"]').prop('checked', true);
+                $('input[name=weekAdj][value="No"]').prop('checked', true);
                 Swal.fire({
                     title: "Please select an option",
                     html:'' +
@@ -233,6 +248,14 @@
                     }
                 })
             });
+
+            $('#wfh_yes').click(function(e) {
+                $('input[name=leaveAdj][value="No"]').prop('checked', true);
+                $('input[name=weekAdj][value="No"]').prop('checked', true);
+            });
+
+
+
         </script>
     @endsection
 </x-app-layout>

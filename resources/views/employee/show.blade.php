@@ -155,46 +155,6 @@
            <a href='/exportexcel/{{$employee->id}}' class="btn btn-success" style="float:right;">Export to Excel</a>
          </div>
 
-
-<!-- <div class="col-md-6">
-       <div class ="flex1" >
-
-        <form action="{{route('employee.show',[$employee->id])}}" method="get"  style="display:flex;">
-            <select name="year" id="year" class="form-control " style="width: 130px; margin-right: 10px;" required>
-                <option value="">Select Year</option>
-                @for($i=2020;$i<=2030;$i++)
-                    @if(request()->has('year'))
-                <option value="{{$i}}" @if(request()->year == $i) selected @endif>{{$i}}</option>
-                    @else
-                    <option value="{{$i}}">{{$i}}</option>
-                    @endif
-                @endfor
-            </select>
-            @php
-                $monthArray = ['Jan','Feb','Mar',"Apr",'May',"Jun",'Jul',"Aug","Sep","Oct","Nov","Dec"];
-            @endphp
-          <select name="month" id="month" class="form-control " style="width: 138px; margin-right: 10px;" required>
-
-            <option value="">Select Month</option>
-                @foreach($monthArray as $i)
-                    @if(request()->has('month'))
-                    <option value="{{$i}}" @if(request()->month == $i) selected @endif>{{$i}}</option>
-                    @else
-                    <option value="{{$i}}">{{$i}}</option>
-                    @endif
-                @endforeach
-            </select>
-            <button type="submit" class="btn btn-info btn-sm">Search</button>
-        </form>
-
-       </div>
-
-</div> -->
-    <!-- <form action="{{route('employee.show',[$employee->id])}}" method="get"  style="display:flex;">
-         <label for="bday-month"></label>
-         <input id="bday-month" type="month" name="bday-month">
-
-    </form> -->
     <form >
       <div>
           <label for="month"></label>
@@ -232,7 +192,6 @@
                             <th scope="col">Late In</th>
                             <th scope="col">Early Out</th>
                             <th scope="col">Absent</th>
-                            <th scope="col">Work_Time</th>
                             <th scope="col">NDays</th>
                             <th scope="col">ATT_Time</th>
                             @if(\App\Http\Helpers\RoleCheck::roleCheckByLoggedInUser(auth()->id()) == "admin")
@@ -299,7 +258,7 @@
                                       echo '<td>', "No",'</td>';
                                     }
                                     ?>
-                                    <td>{{ $item->work_time }}</td>
+
                                     <td>{{ $item->ndays }}</td>
                                     <!-- <td> -->
                                      <?php
@@ -332,6 +291,32 @@
                                          @if($item->remarks != null)
                                              <span data-toggle="tooltip" data-placement="top" title="{{$item->remarks}}"> <i class="far fa-comment-dots fa-lg ml-2"></i></span>
                                          @endif
+                                         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                             <div class="modal-dialog modal-dialog-centered" role="document">
+                                                 <div class="modal-content">
+                                                     <div class="modal-header">
+                                                         <h5 class="modal-title" id="exampleModalLongTitle">Add Remark</h5>
+                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                             <span aria-hidden="true">&times;</span>
+                                                         </button>
+                                                     </div>
+                                                     <form action= "{{ url ('store') }}" method="POST">
+                                                         @csrf
+                                                         <div class="modal-body">
+                                                             <div class="form-group">
+                                                                 <input id="hiddenAtt_id" type="hidden" name="id" value="">
+                                                                 <label for="message-text" class="col-form-label">Message:</label>
+                                                                 <textarea class="form-control" name="remarks" id="message-text" >{{$item->remarks != null ? $item->remarks : "Write your comment here .... "}}</textarea>
+                                                             </div>
+                                                         </div>
+                                                         <div class="modal-footer">
+                                                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                             <button type="submit" class="btn btn-success">Save</button>
+                                                         </div>
+                                                     </form>
+                                                 </div>
+                                             </div>
+                                         </div>
                                     </td>
                                     @endif
                                 </tr>
@@ -342,35 +327,6 @@
                     </table>
                 </div>
             </div>
-
-
-            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Add Remark</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <form action= "{{ url ('store') }}" method="POST">
-                            @csrf
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <input id="hiddenAtt_id" type="hidden" name="id" value="">
-                                        <label for="message-text" class="col-form-label">Message:</label>
-                                        <textarea class="form-control" name="remarks" id="message-text" >{{$item->remarks != null ? $item->remarks : "Write your comment here .... "}}</textarea>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-success">Save</button>
-                                </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 

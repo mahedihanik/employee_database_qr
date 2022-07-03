@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Setting;
 use DateTime;
 use Illuminate\Http\Request;
 use App\Models\MonthlyAttendence;
@@ -143,14 +144,29 @@ class MonthlyAttendenceController extends Controller
     }
     public function attendanceAdjustmentUpdate(Request $request)
     {
-//        echo '<pre>';
-//        print_r($request->date);die();
+        $officeTimeStart = Setting::select(['value'])->where(['settings_key'=>'office_time_start','id'=>3])->first();
+        $officeTimeEnd = Setting::select(['value'])->where(['settings_key'=>'office_time_end','id'=>4])->first();
+        $clockIN = $request->clock_in;
+        $clockOut = $request->clock_out;
+        $early = " ";
+        $late = " ";
+        $timeDiff = strtotime($officeTimeStart->value) - strtotime($clockIN);
+        ($timeDiff <0 ) ? $late = date('H:i',abs($timeDiff)) : (($timeDiff > 0) ? $early = date('H:i',$timeDiff) : $early = date('H:i',strtotime('00:00')));
+
+        //$dd = date('H:i',abs($diff));
+        //$early = date('H:i',$timeDiff);
+
+//                echo '<pre>';
+//        print_r('early='.$early);
+//        print_r('late='.$late);
+//        die();
+
         $dateSlice = explode('-',$request->date);
         $monthNum  = $dateSlice[1];
         $dateObj   = DateTime::createFromFormat('!m', $monthNum);
         $monthName = $dateObj->format('M');
         $finalDateFormat = $dateSlice[2].'-'.$monthName.'-'.$dateSlice[0];
-        $flag = MonthlyAttendence::where(['ac_no'=>$request->account_no,'date'=>$finalDateFormat])->first()->update(['clock_in'=>$request->clock_in,'clock_out'=>$request->clock_out,'absent'=>($request->absent == "Yes")? 0 : 1,'weekend_adjustment'=> ($request->weekAdj == "Yes" )? 1 : 0,'wfh'=> ($request->wfh == "Yes" )? 1 : 0,'leave_adjustment'=> ($request->leaveAdj == "Yes" )? 1 : 0]);
+        $flag = MonthlyAttendence::where(['ac_no'=>$request->account_no,'date'=>$finalDateFormat])->first()->update(['clock_in'=>$request->clock_in,'clock_out'=>$request->clock_out,'early'=>$early,'late'=>$late,'absent'=>($request->absent == "Yes")? 0 : 1,'weekend_adjustment'=> ($request->weekAdj == "Yes" )? 1 : 0,'wfh'=> ($request->wfh == "Yes" )? 1 : 0,'leave_adjustment'=> ($request->leaveAdj == "Yes" )? 1 : 0,'remarks'=>$request->re_marks]);
         return redirect()->route("monthly_attendence.index");
 
     }

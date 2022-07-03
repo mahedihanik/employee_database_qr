@@ -38,12 +38,13 @@
                             <th scope="col">Late</th>
                             <th scope="col">Early</th>
                             <th scope="col">Absent</th>
-                            <th scope="col">Work_Time</th>
                             <th scope="col">NDays</th>
                             <th scope="col">ATT_Time</th>
                             <th scope="col">WFH</th>
                             <th scope="col">WA</th>
                             <th scope="col">LA</th>
+                            <th style="display: none"  scope="col">RM</th>
+                            <th scope="col">Remarks</th>
 
                           </tr>
                         </thead>
@@ -52,26 +53,29 @@
                             @foreach ($monthly_attendence as $item)
                                 <tr style="cursor: pointer">
 
-                                    <td>{{ $item->ac_no }}</td>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->date }}</td>
-                                    <td>{{ $item->clock_in }}</td>
-                                    <td>{{ $item->clock_out}}</td>
-                                    <td>{{ $item->late}}</td>
-                                    <td>{{ $item->early}}</td>
+                                    <td class="onTap">{{ $item->ac_no }}</td>
+                                    <td class="onTap">{{ $item->name }}</td>
+                                    <td class="onTap">{{ $item->date }}</td>
+                                    <td class="onTap">{{ $item->clock_in }}</td>
+                                    <td class="onTap">{{ $item->clock_out}}</td>
+                                    @if($item->late == ' ')
+                                         <td class="onTap">{{ date('H:i',strtotime('00:00'))}}</td>
+                                    @else
+                                         <td class="onTap">{{ $item->late}}</td>
+                                    @endif
+                                    <td class="onTap">{{ $item->early}}</td>
                                     <?php
                                     $val1=$item->absent;
                                     if($val1==1)
                                     {
-                                    echo '<td style="background-color:#43EB8D">', "No",'</td>';
+                                    echo '<td class="onTap" style="background-color:#43EB8D">', "No",'</td>';
                                     }
                                     elseif($val1==0)
                                     {
-                                      echo '<td>', "Yes",'</td>';
+                                      echo '<td class="onTap">', "Yes",'</td>';
                                     }
                                     ?>
-                                    <td>{{ $item->work_time }}</td>
-                                    <td>{{ $item->ndays }}</td>
+                                    <td class="onTap">{{ $item->ndays }}</td>
                                     <!-- <td> -->
                                      <?php
                                       $var1=$item->att_time;
@@ -81,15 +85,15 @@
                                       $minWorkDuration = 465; //in miniute
                                       if($totalMin < $workDuration && $totalMin >=$minWorkDuration)
                                       {
-                                       echo '<td style="background-color:#FFFF33">',$item->att_time,'</td>';
+                                       echo '<td class="onTap" style="background-color:#FFFF33">',$item->att_time,'</td>';
                                       }
                                       elseif($totalMin < $minWorkDuration)
                                       {
-                                       echo '<td style="background-color:#F24D3F">',$item->att_time,'</td>';
+                                       echo '<td class="onTap" style="background-color:#F24D3F">',$item->att_time,'</td>';
 
                                       }
                                       else{
-                                        echo  '<td>',$item->att_time,'</td>';
+                                        echo  '<td class="onTap">',$item->att_time,'</td>';
                                       }
                                      ?>
 
@@ -97,11 +101,11 @@
                                      $wfh=$item->wfh;
                                      if($wfh==1)
                                      {
-                                         echo '<td>', "Yes",'</td>';
+                                         echo '<td class="onTap">', "Yes",'</td>';
                                      }
                                      elseif($wfh==0)
                                      {
-                                         echo '<td>', "No",'</td>';
+                                         echo '<td class="onTap">', "No",'</td>';
                                      }
                                      ?>
 
@@ -109,37 +113,65 @@
                                      $weekend_adjustment=$item->weekend_adjustment;
                                      if($weekend_adjustment==1)
                                      {
-                                       echo '<td><span data-toggle="tooltip" data-placement="top" title="'.$item->weekend_adjustment_date.'" class="badge badge-info">Yes</span></td>';
+                                       echo '<td class="onTap"><span data-toggle="tooltip" data-placement="top" title="'.$item->weekend_adjustment_date.'" class="badge badge-info">Yes</span></td>';
                                          //echo '<td>', "Yes",'</td>';
                                      }
                                      elseif($weekend_adjustment==0)
                                      {
-                                         echo '<td>', "No",'</td>';
+                                         echo '<td class="onTap">', "No",'</td>';
                                      }
                                      ?>
                                      <?php
                                      $leave_adjustment=$item->leave_adjustment;
                                      if($leave_adjustment == 1)
                                      {
-                                         echo '<td>', "Full",'</td>';
+                                         echo '<td class="onTap">', "Full",'</td>';
                                      }
                                      elseif((float)($leave_adjustment) == 0.5)
                                      {
-                                         echo '<td>', "Half",'</td>';
+                                         echo '<td class="onTap">', "Half",'</td>';
                                      }
                                      elseif($leave_adjustment == 0)
                                      {
-                                         echo '<td>', "No",'</td>';
+                                         echo '<td class="onTap">', "No",'</td>';
                                      }
 
                                      ?>
-
-
-                                    <!-- </td> -->
-
-
-
-
+                                    <td style="display: none">{{$item->remarks}}</td>
+                                    <td>
+                                        <button  type="button" class="remarkAddButton btn btn-dark btn-sm" data-toggle="modal" data-id="{{$item->id}}"  data-item="{{$item->remarks}}" data-target="#exampleModalCenter">
+                                            +
+                                        </button>
+                                        @if($item->remarks != null)
+                                            <span data-toggle="tooltip" data-placement="top" title="{{$item->remarks}}"> <i class="far fa-comment-dots fa-lg ml-2"></i></span>
+                                        @endif
+                                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLongTitle">Add Remark</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <form action= "{{ url ('store') }}" method="POST">
+                                                        @csrf
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <input id="hiddenAtt_id" type="hidden" name="id" value="">
+                                                                <label for="message-text" class="col-form-label">Message:</label>
+                                                                <textarea class="form-control" name="remarks" id="message-text" >{{$item->remarks != null ? $item->remarks : "Write your comment here .... "}}</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-success">Save</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
                             @endforeach
                           @endif
@@ -157,9 +189,9 @@
                 $("#attendence-table").DataTable({
                     scrollX:true,
                 });
-                $("#attendence-table").on( 'click', 'tr', function () {
+                $("#attendence-table").on( 'click', 'td.onTap', function () {
                     let data = $("#attendence-table").DataTable().row(this).data();
-                    console.log(JSON.stringify(data));
+                    //console.log(JSON.stringify(data));
                     var newDataSet = {};
                     newDataSet['acc_no']=data[0];
                     newDataSet['name']=data[1];
@@ -169,13 +201,13 @@
                     newDataSet['late']=data[5];
                     newDataSet['early']=data[6];
                     newDataSet['absent']=data[7];
-                    newDataSet['work_time']=data[8];
-                    newDataSet['NDays']=data[9];
-                    newDataSet['att_time']=data[10];
-                    newDataSet['wfh']=data[11];
-                    newDataSet['weekend_adj']=stripHtml(data[12]);
-                    newDataSet['leave_adj']=(data[13]==='Full') ? 'Yes':(data[13]==='Half') ? 'Yes' : 'No';
-                    console.log(stripHtml(data[13]));
+                    newDataSet['NDays']=data[8];
+                    newDataSet['att_time']=data[9];
+                    newDataSet['wfh']=data[10];
+                    newDataSet['weekend_adj']=stripHtml(data[11]);
+                    newDataSet['leave_adj']=(data[12]==='Full') ? 'Yes':(data[12]==='Half') ? 'Yes' : 'No';
+                    newDataSet['remarks']=data[13];
+                    console.log(data);
                     window.open("/attendance_adjustment/"+JSON.stringify(newDataSet),'_blank');
                     //window.location.href = "/attendance_adjustment/"+JSON.stringify(newDataSet);
                 } );
@@ -187,6 +219,13 @@
                 tmp.innerHTML = html;
                 return tmp.textContent || tmp.innerText || "";
             }
+            $(".remarkAddButton").click(function () {
+                let monthly_att_id = $(this).data('id');
+                let remarks = $(this).data('item');
+                $("#hiddenAtt_id").val(monthly_att_id);
+                $("#message-text").val(remarks);
+                //console.log(monthly_att_id+' '+remarks)
+            });
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip()
             })

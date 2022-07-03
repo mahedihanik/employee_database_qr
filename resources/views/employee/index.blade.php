@@ -43,12 +43,12 @@
                                     <td>{{ $item->official_number }}</td>
                                     <td>@if($item->active) Active @else Inactive @endif</td>
                                     <td>
-                                        <a href="{{ route('employee.show', $item->id) }}" class="mr-1"><i class="fas fa-eye"></i></a>
+                                        <a href="{{ route('employee.show', $item->employee_id) }}" class="mr-1"><i class="fas fa-eye"></i></a>
                                         @if(\App\Http\Helpers\RoleCheck::roleCheckByLoggedInUser(auth()->id()) == 'admin')
 
-                                            <a href="{{ route('employee.edit', $item->id) }}" class="mr-1"><i class="fas fa-edit"></i></a>
+                                            <a href="{{ route('employee.edit', $item->employee_id) }}" class="mr-1"><i class="fas fa-edit"></i></a>
 
-                                            <form action="{{ route('employee.destroy', $item->id) }}" method="POST" style="display:inline-block">
+                                            <form action="{{ route('employee.destroy', $item->employee_id) }}" method="POST" style="display:inline-block">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" style="border:none; background:transparent; padding: 0px;display:inline-block" ><i class="fas fa-trash"></i></button>

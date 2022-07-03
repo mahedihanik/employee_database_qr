@@ -79,10 +79,10 @@
                                             <label for="absent">Absent</label>
                                             <input id="absent_tab" type="text" class="form-control" name="absent" value="">
                                         </div>
-                                        <div class="col">
-                                            <label for="work_time">Work Time</label>
-                                            <input id="work_time_tab" type="text" class="form-control" name="work_time" value="" readonly>
-                                        </div>
+{{--                                        <div class="col">--}}
+{{--                                            <label for="work_time">Work Time</label>--}}
+{{--                                            <input id="work_time_tab" type="text" class="form-control" name="work_time" value="" readonly>--}}
+{{--                                        </div>--}}
                                         <div class="col">
                                             <label for="date">NDays</label>
                                             <input id="NDays_tab" type="text" class="form-control" name="n_days" value="" readonly>
@@ -91,6 +91,16 @@
                                             <label for="date">ATT_Time</label>
                                             <input id="att_time_tab" type="text" class="form-control" name="att_time" value="" readonly>
                                         </div>
+                                    </div>
+                                    <div class="form-row pb-8">
+                                        <div class="col">
+                                            <label for="absent">Remarks</label>
+                                            <textarea id="remarks_tab" class="form-control" name="re_marks" rows="3"></textarea>
+                                        </div>
+                                        {{--                                        <div class="col">--}}
+                                        {{--                                            <label for="work_time">Work Time</label>--}}
+                                        {{--                                            <input type="text" class="form-control" name="work_time" value="{{$infoSet->work_time}}" readonly>--}}
+                                        {{--                                        </div>--}}
                                     </div>
                                     <div class="form-row pb-8">
                                         <div class="col">
@@ -192,6 +202,7 @@
                             $("#absent_tab").val(response.absent === '0' ? 'No' : 'Yes');
                             $("#work_time_tab").val(response.work_time);
                             $("#NDays_tab").val(response.ndays);
+                            $("#remarks_tab").val(response.remarks);
                             $("#att_time_tab").val(response.att_time);
                             let dayCheckSplit = (response.leave_adjustment === 1) ? 'Full Day Leave' : 'Half Day Leave';
                             (response.wfh === 0 ? $("#wfh_no_tab").attr('checked',true):$("#wfh_yes_tab").attr('checked',true));
@@ -210,6 +221,8 @@
                         }
                     })
                     $('#weekAdj_yes_tab').click(function(e) {
+                        $('input[name=wfh][value="No"]').prop('checked', true);
+                        $('input[name=leaveAdj][value="No"]').prop('checked', true);
                         Swal.fire({
                             title: "Please enter the date",
                             html:'<input type="date" id="weekend_date_adjust" class="form-control" autofocus>',
@@ -257,6 +270,8 @@
                     });
 
                     $('#leaveAdj_yes_tab').click(function(e) {
+                        $('input[name=wfh][value="No"]').prop('checked', true);
+                        $('input[name=weekAdj][value="No"]').prop('checked', true);
                         Swal.fire({
                             title: "Please select an option",
                             html:'' +
@@ -302,6 +317,10 @@
                                 })
                             }
                         })
+                    });
+                    $('#wfh_yes_tab').click(function(e) {
+                        $('input[name=leaveAdj][value="No"]').prop('checked', true);
+                        $('input[name=weekAdj][value="No"]').prop('checked', true);
                     });
                 }
 

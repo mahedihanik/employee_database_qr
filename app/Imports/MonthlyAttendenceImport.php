@@ -14,14 +14,14 @@ class MonthlyAttendenceImport implements ToModel, WithHeadingRow
     * @param Collection $collection
     *@return \Illuminate\Database\Eloquent\Model|null
     */
-    
-    
+
+
         public function model(array $row)
         {
-            
+
             try{
                 DB::table('monthly_attendences')->insert(
-                    [                       
+                    [
                         'emp_no'=>$row['emp_no'],
                         'ac_no'=>$row['ac_no'],
                         'no'=>$row['no'],
@@ -56,10 +56,10 @@ class MonthlyAttendenceImport implements ToModel, WithHeadingRow
            }catch(\Exception $e){
                 echo $e;
                 exit;
-            }    
+            }
         }
 
-    
+
     private function formateExcelTime($value2){
 
         $UNIX_DATE = ($value2- 25569) * 86400;
@@ -79,12 +79,12 @@ class MonthlyAttendenceImport implements ToModel, WithHeadingRow
 
     private function absentInsert($temp1)
     {
-        
+
         if($temp1=="TRUE")
           {
            return 1;
           }
-           
+
           elseif($temp1==null)
           {
             return 0;
